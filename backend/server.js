@@ -61,6 +61,25 @@ app.post('/login', async (req,res) => {
     })
 })
 
+app.post('/logindriver', async (req,res) => {
+    const {name, pass }= req.body
+    connection.query(`SELECT * FROM driver1 WHERE d_name="${name}" and driver_id="${pass}";`, (e,op) => {
+        if(e){
+            console.log(e)
+            return res.status(404).json({'msg': 'Some error occured' })
+        }
+        else{
+            if(op.length === 0){
+                console.log('yes')
+                return res.status(200).json({'msg' : 'Invalid creds'})
+            }
+            else{
+                return res.status(200).json({'msg': 'Success', data : op})
+            }
+        }
+    })
+})
+
 
 app.post('/register', async (req,res) => {
     console.log(req.body)
@@ -96,4 +115,16 @@ app.post('/gettrips', async(req,res) => {
         }
 
     }) 
+})
+
+app.post('/gettaxi',async (req,res) => {
+    const {driver_id} = req.body
+    connection.query(`SELECT * FROM taxi1 WHERE driver_id="${driver_id}"`, (e,op) => {
+        if(e){
+            return res.status(400).json({'msg' : 'Error occured'})
+        }
+        else{
+            res.status(200).json({msg : 'Success',data : op})
+        }
+    })
 })

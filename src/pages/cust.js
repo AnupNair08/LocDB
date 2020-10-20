@@ -109,7 +109,7 @@ export default class Customer extends Component {
             <div>
                 <ReactNotification />
                 {
-                    !this.state.login ? 
+                    this.state.login ? 
            (             <div className = "mt-5">
                             <h1>
                                 Welcome to LocDB!
