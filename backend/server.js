@@ -8,7 +8,7 @@ const connection = mysql.createConnection({
     host : 'localhost',
     user : 'root',
     password : process.env.DBpass,
-    database : 'paytm'
+    database : 'locdb'
 })
 connection.connect(e => {
     if(e){
@@ -25,7 +25,7 @@ app.listen(port, () => {
 })
 
 app.get('/',()=>{
-    connection.query('SELECT * FROM customer', (e,res) =>{
+    connection.query('SELECT * FROM user1', (e,res) =>{
         if(e){
             console.log(e)
         }
