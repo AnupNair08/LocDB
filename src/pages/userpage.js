@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Header from './header'
 import axios from 'axios'
+import {Button} from 'reactstrap'
+import UserLocation from './usertrip'
 export default class User extends Component {
     constructor(props){
         super(props)
@@ -26,6 +28,9 @@ export default class User extends Component {
                 <div style= {{display : 'flex' , flexDirection : 'row', justifyContent : 'center', alignItems : 'center'}}>
                 <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" height="200px" width = "200px"></img>
                 <h3>Hello [Username]</h3>
+                </div>
+                <div>
+                    <UserLocation></UserLocation>
                 </div>
                 {/* <h3>Hello {this.props.data.name}</h3> */}
             </div>

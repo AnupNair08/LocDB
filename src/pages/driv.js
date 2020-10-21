@@ -68,30 +68,48 @@ export default class DriverPage extends Component {
                 <Card body inverse>
                     <CardTitle className ="text-dark"><h2>My Profile</h2></CardTitle>
                     <ListGroup>
+                    <ListGroupItem className="text-dark">Name: {this.props.data.d_name}</ListGroupItem>
                     <ListGroupItem className="text-dark">Phone Number: {this.props.data.d_phone_no}</ListGroupItem>
-                    {
-                        this.state && 
-                        <ListGroupItem className="text-dark">My Taxi: {this.state.taxi.data[0].model}[{this.state.taxi.data[0].color}] 
-                        {this.state.taxi.data[0].number}</ListGroupItem>
-                    }
+                    <ListGroupItem>
+                <Button onClick = {this.getloc}>Get Current Location</Button>
+                {
+                    this.state && this.state.myloc ? 
+                        <h3 className= "text-dark"><img src = "https://i.pinimg.com/originals/29/93/fd/2993fd151e2e1cab871aec155e22cbcc.png" height="40px" width="30px"></img>   {this.state.myloc}</h3>
+                    : <h3></h3>
+
+                }
+                    </ListGroupItem>
                     <ListGroupItem className="text-dark">Rating : {this.props.data.rating}<img src="https://i.pinimg.com/736x/68/9f/52/689f5245bf682fc77d8346f69e082fba.jpg"
                     height = "20px" width = "20px"></img></ListGroupItem>
+                    <ListGroupItem className= "text-dark">
+            My Shift : {this.state && this.state.shifts && <h4>{this.state.shifts[0].start}  {this.state.shifts[0].end}</h4>} 
+                    </ListGroupItem>
+                    <ListGroupItem>
+                        <Location driver = {this.props.data.driver_id}/>    
+                    </ListGroupItem>
+
                     </ListGroup>
                     
               </Card>
 
                 </div>
-                <h3>My Location:</h3>
-                <Button onClick = {this.getloc}>Get Current Location</Button>
-                {
-                    this.state && this.state.myloc ? 
-                        <h3 className="mt-1"><img src = "https://i.pinimg.com/originals/29/93/fd/2993fd151e2e1cab871aec155e22cbcc.png" height="40px" width="30px"></img>   {this.state.myloc}</h3>
-                    : <h3></h3>
+                <h3>My Taxi</h3><br></br>
+                <div style = {{display : 'flex', flexDirection : 'row', justifyContent : 'center', alignItems : 'center'}}>
 
-                }
-                <Location driver = {this.props.data.driver_id}/>    
-                <h3>My Shift</h3>     
-            {this.state && this.state.shifts && <h3>{this.state.shifts[0].start}  {this.state.shifts[0].end}</h3>}       
+                    <img className="mr-5" src="https://img2.pngio.com/white-sedan-illustration-transparent-png-svg-vector-file-white-sedan-car-png-512_512.png" height="400px" width = "400px"></img>
+                    <div className = "ml-5">
+
+                    {
+                        this.state && 
+                        <h3 className="text-dark">
+                        Volkswagen Vento<br></br>
+                        {this.state.taxi.data[0].model}<br>
+                        </br>Color : {this.state.taxi.data[0].color} <br></br>
+                        Number : {this.state.taxi.data[0].number}</h3>
+                    }
+                    </div>
+                </div>
+                     
                 </div>
         )
     }
