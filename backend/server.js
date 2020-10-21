@@ -1,46 +1,20 @@
 const express = require('express')
-const mysql = require('mysql')
 const port = process.env.PORT || 5000
 const app = express();
 const cors = require("cors")
 const bodyParser = require('body-parser')
-
+const router = require('./routes')
+const connection = require('./conn')
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-require('dotenv').config()
-
 app.use(cors())
 
-const connection = mysql.createConnection({
-    host : 'localhost',
-    user : 'root',
-    password : process.env.DBpass,
-    database : 'locdb',
-    multipleStatements: true
-})
-connection.connect(e => {
-    if(e){
-        console.log(e)
-    }
-    else{
-        console.log('Connected to MySQL Client')
-    }
-})
 
 app.listen(port, () => {
     console.log(`Listening to ${port}`)
 })
 
-app.get('/',()=>{
-    connection.query('SELECT * FROM user1', (e,res) =>{
-        if(e){
-            console.log(e)
-        }
-        else{
-            console.log(res)
-        }
-    })
-})
+app.use('/api',router)
 
 app.post('/login', async (req,res) => {
     const {name, pass }= req.body
@@ -120,6 +94,17 @@ app.post('/gettrips', async(req,res) => {
 app.post('/gettaxi',async (req,res) => {
     const {driver_id} = req.body
     connection.query(`SELECT * FROM taxi1 WHERE driver_id="${driver_id}"`, (e,op) => {
+        if(e){
+            return res.status(400).json({'msg' : 'Error occured'})
+        }
+        else{
+            res.status(200).json({msg : 'Success',data : op})
+        }
+    })
+})
+
+app.post('/getlocation',async (req,res) => {
+    connection.query(`SELECT * FROM location`, (e,op) => {
         if(e){
             return res.status(400).json({'msg' : 'Error occured'})
         }
