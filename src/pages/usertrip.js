@@ -72,6 +72,47 @@ export default class UserLocation extends Component {
         })
         this.endtoggle()
     }
+    book = (taxi) => {
+        axios({
+            method:'post',
+            url : 'http://localhost:5000/api/booktrip',
+            data : {
+                user_id : "123",
+                taxi_id : taxi,
+                from_s : this.state.start,
+                to_d : this.state.end,
+                trip_id : "916"
+            }
+        }).then((res) => {
+            console.log(res)
+            store.addNotification({
+                title: 'Requested new ride',
+                message: 'Waiting for Driver Confirmation',
+                type: 'success',
+                container: 'top-right',
+                animationIn: ['animated', 'fadeIn'],
+                animationOut: ['animated', 'fadeOut'],
+                dismiss: {
+                  duration: 3000,
+                  pauseOnHover: true
+                }
+              });
+        }).catch(e => {
+            store.addNotification({
+                title: 'Error',
+                message: 'Try agian',
+                type: 'danger',
+                container: 'top-right',
+                animationIn: ['animated', 'fadeIn'],
+                animationOut: ['animated', 'fadeOut'],
+                dismiss: {
+                  duration: 3000,
+                  pauseOnHover: true
+                }
+              });
+            console.log(e)
+        })
+    } 
     render() {
         return (
             <div>
@@ -122,7 +163,7 @@ export default class UserLocation extends Component {
                         return (
                         <div>
                             <h1>{val.taxi_id}</h1>
-                            <Button>Book</Button>
+                            <Button onClick={() => this.book(val.taxi_id)}>Book</Button>
                         </div>
 
                         )

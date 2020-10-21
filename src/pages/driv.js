@@ -38,6 +38,26 @@ export default class DriverPage extends Component {
         
     }
 
+    gettrips = () => {
+        axios({
+            method :'post',
+            url : 'http://localhost:5000/api/getrequests',
+            data : {
+                taxi_id : this.state.taxi.data[0].taxi_id
+            }
+        }).then(res => {
+            console.log(res)
+            const data = res.data.data
+            const trip_id = data.trip_id
+            const tripDetails = data.r
+            this.setState({
+                request : true,
+                tripDetails : tripDetails
+            })
+        }).catch(e => {
+            console.log(e)
+        })
+    }
     getloc = () => {
         axios({
             method : 'post',
@@ -53,6 +73,24 @@ export default class DriverPage extends Component {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    approve = (trip) => {
+        axios({
+            method : 'post',
+            url : 'http://localhost:5000/api/approve',
+            data : {
+                trip_id : trip,
+                start : "09:10:00",
+                end : "09:40:00",
+                duration : "00:40:00",
+                fare : 250
+            }
+        }).then(res => {
+            console.log(res)
+        }).catch(e => {
+            console.log(e)
+        }) 
     }
     render() {
         return (
@@ -108,6 +146,22 @@ export default class DriverPage extends Component {
                         Number : {this.state.taxi.data[0].number}</h3>
                     }
                     </div>
+                </div>
+                <div>
+                    {/* Display the name and details */}
+                    <Button onClick = {this.gettrips}>Get Trip Requests</Button>
+                    {
+                        (this.state && this.state.request) ? this.state.tripDetails.map((val,k) => {
+                            return (
+                                <div>
+                                    <h3>{val.user_id}</h3> 
+                                    <Button onClick = {() => this.approve(val.trip_id)}>Approve</Button>
+                                    <Button onClick = {() => this.reject(val.trip_id)}>Approve</Button>
+
+                                </div>
+                            )
+                        }) : <h1></h1>
+                    }
                 </div>
                      
                 </div>
