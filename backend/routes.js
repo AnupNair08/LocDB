@@ -55,9 +55,30 @@ router.post('/getnearby', async(req,res) => {
     })
 })
 
+
+router.post('/getuser', async(req,res) => {
+    const {user_id } = req.body
+    connection.query(`select phone,name from user1 inner join user2 on user1.user_id=user2.user_id and user1.user_id="${user_id}";`, (e,op) => {
+        if(e){
+            console.log(e)
+            return res.status(400).json({msg : 'Error'})
+        }
+        else{
+            return res.status(200).json({msg : 'Success', data : op})
+        }
+    })  
+})
+
+
 router.post('/booktrip', async(req,res) => {
     const {user_id, taxi_id, from_s, to_d, trip_id} = req.body
     let driver_id = ""
+    await connection.query(`INSERT INTO trip3 values("${user_id}","${from_s}","${to_d}","${trip_id}");INSERT INTO trip2 values("${from_s}","${to_d}","00:00:00",0,"${trip_id}");`,[1,2], (e,op) => {
+        if(e){
+            console.log(e)
+            return res.status(404).json({'msg' : 'Error'})
+        }
+    })
     await connection.query(`SELECT driver_id from taxi1 where taxi_id="${taxi_id}"`, async (e,op)=>{
         if(e){
             return res.status(400).json({'msg' : 'Error'})
@@ -75,12 +96,6 @@ router.post('/booktrip', async(req,res) => {
                     return res.status(200).json({'msg' : 'Request made'})
                 }
             })
-        }
-    })
-    await connection.query(`INSERT INTO trip2 values("${from_s}","${to_d}","00:00:00",0);INSERT INTO trip3 values("${user_id}","${from_s}","${to_d}","${trip_id}");`,[1,2], (e,op) => {
-        if(e){
-            console.log(e)
-            return res.status(404).json({'msg' : 'Error'})
         }
     })
     
@@ -139,7 +154,7 @@ router.post('/approve', async(req,res) => {
         else{
             from_s = op[0].from_s
             to_d = op[0].to_d
-            await connection.query(`UPDATE trip2 SET duration="${duration}",fare=${fare} WHERE from_s="${from_s}" and to_d="${to_d}";UPDATE trip4 SET status=TRUE WHERE trip_id="${trip_id}"`,[1,2], (e,op) => {
+            await connection.query(`UPDATE trip2 SET duration="${duration}",fare=${fare} WHERE from_s="${from_s}" and to_d="${to_d}" and trip_id="${trip_id}";UPDATE trip4 SET status=TRUE WHERE trip_id="${trip_id}"`,[1,2], (e,op) => {
                 if(e){
                     console.log(e)
                     return res.status(400).json({'msg' : 'err'})
@@ -159,6 +174,13 @@ router.post('/approve', async(req,res) => {
         }
     })
     
+})
+
+router.post('/decline', async(req,res) => {
+    const {trip_id} = req.body
+    connection.query(`DELETE FROM trip3 where trip_id="${trip_id}"`,(e,op) => {
+        res.status(200).json({msg : 'Done'})
+    })
 })
 
 module.exports = router

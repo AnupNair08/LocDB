@@ -12,7 +12,8 @@ export default class UserLocation extends Component {
             open : false,
             loc : '',
             endopen : false,
-            nearby : []
+            nearby : [],
+            request : false
         }
     }
     componentDidMount = async () => {
@@ -81,7 +82,7 @@ export default class UserLocation extends Component {
                 taxi_id : taxi,
                 from_s : this.state.start,
                 to_d : this.state.end,
-                trip_id : "7845"
+                trip_id : Math.floor(Math.random() * 1000000).toString()
             }
         }).then((res) => {
             console.log(res)
@@ -97,10 +98,13 @@ export default class UserLocation extends Component {
                   pauseOnHover: true
                 }
               });
+              this.setState({
+                  request : true
+              })
         }).catch(e => {
             store.addNotification({
                 title: 'Error',
-                message: 'Try agian',
+                message: 'Try again',
                 type: 'danger',
                 container: 'top-right',
                 animationIn: ['animated', 'fadeIn'],
@@ -159,7 +163,7 @@ export default class UserLocation extends Component {
                     Check for taxis
                 </Button>
                 {
-                    this.state.nearby.map((val,k) => {
+                    !this.state.request && this.state.nearby.map((val,k) => {
                         return (
                         <div>
                             <h1>{val.taxi_id}</h1>

@@ -36,6 +36,7 @@ export default class Location extends Component {
         this.setState({
             loc : 'val'
         })
+        this.toggle()
         axios({
             method: 'post',
             url : 'http://localhost:5000/api/update',

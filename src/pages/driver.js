@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import {Button} from  'reactstrap'
 import DriverPage from './driv'
+import { Card, Button, CardHeader, CardFooter, CardBody,
+    CardTitle, CardText } from 'reactstrap';
 import axios from 'axios'
 export default class Driver extends Component {
     constructor(props){
@@ -44,16 +45,27 @@ export default class Driver extends Component {
             <div>
                 {
                     !this.state.login ? 
-                <div className = "mt-5">
+                <div className = "mt-3" >
                             <h1>
-                                Welcome to LocDB!(Driver Interface)
+                                Welcome to LocDB!
                             </h1>
-                            <h2>Login to continue</h2>
-                            <p>Enter name</p>
-                            <input  onChange = {this.handlename}></input>
-                            <p>Enter password</p>
-                            <input  type="password" onChange = {this.handlepass}></input><br></br>
+                                <img src="https://dmm40cf0lyret.cloudfront.net/wp-content/uploads/2020/08/desarrollo-app-taxi.jpg" height= "400px" width="600px"></img>
+                            <div>
+                            <Card>
+                                <CardHeader><h3>Login to continue</h3></CardHeader>
+                                <CardBody>
+                                <h2>Enter name: 
+                                <input style={{marginLeft : "70px"}} onChange = {this.handlename}></input>
+                                </h2>
+                                <h2>Enter password:
+                                <input className="ml-3" type="password" onChange = {this.handlepass}></input><br></br>
+
+                                </h2>
+                                </CardBody>
+                                <CardFooter></CardFooter>
+                            </Card>    
                             <Button color = "success" className="mt-3" onClick = {this.login}>Login</Button>
+                            </div>
                     </div> : <DriverPage data = {this.state.data}/>
                 }
             </div>
