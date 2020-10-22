@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Dropdown, DropdownToggle, DropdownMenu,Button } from 'reactstrap';
+import { Dropdown, DropdownToggle, DropdownMenu,Button, Collapse, Card, CardBody } from 'reactstrap';
 import ReactNotification, { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css'
 
@@ -13,7 +13,10 @@ export default class UserLocation extends Component {
             loc : '',
             endopen : false,
             nearby : [],
-            request : false
+            request : false,
+            endN : '',
+            startN : '',
+            isOpen : false
         }
     }
     componentDidMount = async () => {
@@ -39,10 +42,11 @@ export default class UserLocation extends Component {
             endopen : !this.state.endopen
         })
     }
-    getinput1 = (val) => {
+    getinput1 = (val,loc) => {
         console.log(this.state)
         this.setState({
-            start : val
+            start : val,
+            startN : loc
         })
         this.toggle()
     }
@@ -66,12 +70,19 @@ export default class UserLocation extends Component {
         })
     }
     
-    getinput2 = (val) => {
+    getinput2 = (val,loc) => {
         console.log('end')
         this.setState({
-            end : val
+            end : val,
+            endN : loc
         })
         this.endtoggle()
+    }
+
+    toggleOpen = () => {
+        this.setState({
+            isOpen : !this.state.isOpen
+        })
     }
     book = (taxi) => {
         axios({
@@ -119,19 +130,23 @@ export default class UserLocation extends Component {
     } 
     render() {
         return (
-            <div>
-                <h3>Start a New Trip</h3>
-                <div>
+            <div className="ml-5" style= {{width : '40vw', display : 'flex', flexDirection : 'column', justifyContent:'center', alignItems :'center'}}>
+                <Button color="primary" className="lead" onClick={this.toggleOpen} style={{ marginBottom: '1rem' }}>Start a New Trip</Button>
+                    <Collapse isOpen={this.state.isOpen}>
+                        <Card>
+                        <CardBody>
+                        <div>
+                    <h3 className="lead">Start</h3>
                  <Dropdown id="start" isOpen={this.state.open} toggle={this.toggle}>
                     <DropdownToggle caret>
-                    {/* {this.state.start !== '' ? <h6>{this.state.start}</h6> : <h6>Select End</h6>} */}
-                    Select Start
+                    {this.state.startN !== '' ? <h6>{this.state.startN}</h6> : <h6>Select Start</h6>}
+                    {/* Select Start */}
                     </DropdownToggle>
                     <DropdownMenu>
                         {this.state.location && this.state.location.map((k,val) => {
                             return (
                                 <div style = {{display : 'flex', flexDirection : 'row', justifyContent : 'center' , alignItems : 'center'}} className = "w-100">
-                                    <Button onClick={() => this.getinput1(k.zipcode)} header>{k.loc_name}</Button>
+                                    <Button color="white" onClick={() => this.getinput1(k.zipcode,k.loc_name)} header>{k.loc_name}</Button>
                                     <br></br>
                                 </div>
                             ) 
@@ -139,18 +154,19 @@ export default class UserLocation extends Component {
                     </DropdownMenu>
                 </Dropdown>
                 </div>
-
-                <Dropdown id = "end" isOpen={this.state.endopen} toggle={this.endtoggle} className="mt-5">
+                    <div>
+                    <h3 className="lead">End</h3>
+                <Dropdown id = "end" isOpen={this.state.endopen} toggle={this.endtoggle}>
                    <DropdownToggle caret>
-                {/* {this.state.end !== '' ? <h6>{this.state.end}</h6> : <h6>Select End</h6>} */}
-                Select End
+                {this.state.endN !== '' ? <h6>{this.state.endN}</h6> : <h6>Select End</h6>}
+                {/* Select End */}
 
                     </DropdownToggle>
                 <DropdownMenu>
                     {this.state.location && this.state.location.map((k,val) => {
                         return (
                             <div style = {{display : 'flex', flexDirection : 'row', justifyContent : 'center' , alignItems : 'center'}} className = "w-100">
-                                <Button key={k} onClick={() => this.getinput2(k.zipcode)} header>{k.loc_name}</Button>
+                                <Button color="white" key={k} onClick={() => this.getinput2(k.zipcode,k.loc_name)} header>{k.loc_name}</Button>
                                 <br></br>
                             </div>
                         ) 
@@ -159,7 +175,8 @@ export default class UserLocation extends Component {
                 
                 </DropdownMenu>
                 </Dropdown>
-                <Button className="mt-5" onClick = {this.gettaxi}>
+                    </div>
+                <Button color="success" className="mt-5" onClick = {this.gettaxi}>
                     Check for taxis
                 </Button>
                 {
@@ -174,7 +191,11 @@ export default class UserLocation extends Component {
 
                     })
                 }
+                        </CardBody>
+                        </Card>
+                    </Collapse>                      
             </div>
         )
     }
+
 }

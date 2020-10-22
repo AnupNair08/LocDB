@@ -28,12 +28,13 @@ export default class Landing extends Component {
         return (
             <div>
                 <div style = {{display : 'flex', flexDirection : "column", justifyContent : "center", alignItems : 'center'}} className = "mt-5">
-                <h1>LocDB: A Taxi management service</h1>
+                <h1 className="display-3">LocDB: A Taxi management service</h1>
                 <img src="https://i.pinimg.com/originals/57/07/26/570726f9398849aa200fbcba9466f9f2.gif" height = {"200px"} width = {"450px"}></img>
-                <h4>Choose user type</h4>
-                <div style = {{display : 'flex' , flexDirection : 'row'}} className = "mt-5">
-                <Button color="primary" onClick = {this.handlecust}>Customer</Button>
-                <Button color="primary" onClick = {this.handledriver}>Driver</Button>
+                <h1 className="lead">Choose user type</h1>
+                <div style = {{display : 'flex' , flexDirection : 'column'}} className = "mt-5">
+                <Button color="primary" onClick = {this.handlecust} className="lead">Customer</Button>
+                <hr className="my-2" />
+                <Button color="primary" onClick = {this.handledriver } className="lead">Driver</Button>
 
                 </div>
 

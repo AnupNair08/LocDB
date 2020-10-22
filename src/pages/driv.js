@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Header from './header'
-import {ListGroup, ListGroupItem, Button, Dropdown, Card, CardTitle, CardText} from 'reactstrap'
+import {ListGroup, ListGroupItem, Button, Dropdown, Card, CardTitle, CardText, Jumbotron} from 'reactstrap'
 import axios from 'axios'
 import Location from './loc'
 import ReactNotification, { store } from 'react-notifications-component';
@@ -152,6 +152,10 @@ export default class DriverPage extends Component {
         return (
             <div>
                 <Header></Header>
+
+            <Jumbotron>
+
+            <div className="lead">
                 <ReactNotification />
                 <div  style = {{display : 'flex', flexDirection : 'row', justifyContent : 'center', alignItems : 'center'}}>
 
@@ -160,29 +164,29 @@ export default class DriverPage extends Component {
                     <h3>Hello {this.props.data.d_name}</h3>
                 </div>
                 <Card body inverse>
-                    <CardTitle className ="text-dark"><h2><img src="https://media.istockphoto.com/vectors/worker-avatar-icon-illustration-police-man-bus-driver-vector-id1169147810?b=1&k=6&m=1169147810&s=612x612&w=0&h=vTIey0s-koGIXzYCMK26lza_hC2j5veslmcYN7boEew=" height="40px" width="40px"></img>  My Profile</h2></CardTitle>
+                    <CardTitle className ="text-dark"><h2 className="display-4"><img src="https://media.istockphoto.com/vectors/worker-avatar-icon-illustration-police-man-bus-driver-vector-id1169147810?b=1&k=6&m=1169147810&s=612x612&w=0&h=vTIey0s-koGIXzYCMK26lza_hC2j5veslmcYN7boEew=" height="40px" width="40px"></img>  My Profile</h2></CardTitle>
                     <ListGroup>
-                    <ListGroupItem  className="text-dark list-group-item list-group-item-action list-group-item-primary"><b>Name:</b> {this.props.data.d_name}</ListGroupItem>
-                    <ListGroupItem className="text-dark list-group-item list-group-item-action list-group-item-primary"><b>Phone Number:</b> {this.props.data.d_phone_no}</ListGroupItem>
-                    <ListGroupItem className="list-group-item list-group-item-action list-group-item-primary">
+                    <ListGroupItem  className="text-dark list-group-item list-group-item-action list-group-item-light"><b>Name:</b> {this.props.data.d_name}</ListGroupItem>
+                    <ListGroupItem className="text-dark list-group-item list-group-item-action list-group-item-light"><b>Phone Number:</b> {this.props.data.d_phone_no}</ListGroupItem>
+                    <ListGroupItem className="list-group-item list-group-item-action list-group-item-light">
                 <div style={{display : 'flex', flexDirection : 'row' ,justifyContent : 'center' , alignItems : 'center'}}>
                 <Button color="primary" onClick = {this.getloc}>Get Current Location</Button>
                 {
                     this.state && this.state.myloc ? 
-                        <h3 className= "text-dark"><img src = "https://img.freepik.com/free-vector/location_53876-25530.jpg?size=338&ext=jpg" height="40px" width="40px"></img>   {this.state.myloc}</h3>
+                        <h3 className= "text-dark"><img src = "https://i.pinimg.com/originals/29/93/fd/2993fd151e2e1cab871aec155e22cbcc.png" height="40px" width="40px"></img>   {this.state.myloc}</h3>
                     : <h3></h3>
 
                 }
                 </div>
                     </ListGroupItem>
-                    <ListGroupItem className="list-group-item list-group-item-action list-group-item-primary" ><b>Rating: </b> {this.props.data.rating}<img className="ml-3" src="https://i.pinimg.com/originals/7e/28/89/7e288947c2c179f39398a72fdad19e0c.png"
+                    <ListGroupItem className="list-group-item list-group-item-action list-group-item-light" ><b>Rating: </b> {this.props.data.rating}<img className="ml-3" src="https://i.dlpng.com/static/png/6908727_preview.png"
                     height = "20px" width = "20px"></img></ListGroupItem>
-                    <ListGroupItem className="list-group-item list-group-item-action list-group-item-primary text-dark">
+                    <ListGroupItem className="list-group-item list-group-item-action list-group-item-light text-dark">
                         <div>
             <b>My Shift: {this.state && this.state.shifts && <h4>{this.state.shifts[0].start} to  {this.state.shifts[0].end}</h4>} </b>
                         </div>
                     </ListGroupItem>
-                    <ListGroupItem className="list-group-item list-group-item-action list-group-item-primary">
+                    <ListGroupItem className="list-group-item list-group-item-action list-group-item-lighty">
                         <Location driver = {this.props.data.driver_id}/>    
                     </ListGroupItem>
 
@@ -200,7 +204,9 @@ export default class DriverPage extends Component {
                     {
                         this.state && 
                         <h3>
+                            <h4 className="display-4">
                         Volkswagen Vento<br></br>
+                            </h4>
                         Type: {this.state.taxi.data[0].model}<br>
                         </br>Color : {this.state.taxi.data[0].color} <br></br>
                         Number : {this.state.taxi.data[0].number}</h3>
@@ -229,6 +235,8 @@ export default class DriverPage extends Component {
                 </div>
                      
                 </div>
+            </Jumbotron>
+            </div>
         )
     }
 }
