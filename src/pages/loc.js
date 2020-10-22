@@ -80,14 +80,14 @@ export default class Location extends Component {
         return (
             <div>
                  <Dropdown isOpen={this.state.open} toggle={this.toggle}>
-                   <DropdownToggle caret>
+                   <DropdownToggle color="primary" caret>
                     Update Location
                     </DropdownToggle>
                 <DropdownMenu>
                     {this.state.location && this.state.location.map((k,val) => {
                         return (
                             <div style = {{display : 'flex', flexDirection : 'row', justifyContent : 'center' , alignItems : 'center'}} className = "w-100">
-                                <Button onClick={() => this.getinput(k.zipcode)} header>{k.loc_name}</Button>
+                                <Button color="white" onClick={() => this.getinput(k.zipcode)} header>{k.loc_name}</Button>
                                 <br></br>
                             </div>
                         ) 

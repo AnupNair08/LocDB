@@ -4,7 +4,7 @@ const connection = require('./conn')
 router.post('/mylocation', async (req,res) => {
     const {driver_id} = req.body
     console.log(driver_id)
-    connection.query(`SELECT loc_name from location where zipcode in (select zipcode from present_at where driver_id="${driver_id}");`, (e,op) => {
+    connection.query(`SELECT * from location where zipcode in (select zipcode from present_at where driver_id="${driver_id}");`, (e,op) => {
         if(e){
             console.log(e)
             res.status(404).json({'msg' : "Error"})
@@ -88,27 +88,36 @@ router.post('/booktrip', async(req,res) => {
 
 router.post('/getrequests', async(req,res) => {
     const {taxi_id} = req.body
-    connection.query(`SELECT * FROM trip4 WHERE taxi_id="${taxi_id}"`, (e,op) => {
+    connection.query(`SELECT * FROM trip4 WHERE taxi_id="${taxi_id}"`, async (e,op) => {
         if(e){
             console.log(e)
             return res.status(404).json({'msg' : 'Error'})
         }
         else{
             if(op.length > 0){
-                const trip_id = op[0].trip_id
-                connection.query(`SELECT * FROM trip3 where trip_id="${trip_id}"`, (err, opt) => {
-                    if(e){
-                    console.log(e)
-                    return res.status(404).json({'msg' : 'Lol'})
-                }
-                else{
-                    data = {
-                        trip_id : trip_id,
-                        r : opt
-                    }
-                    return res.status(200).json({'msg':'Success',data : data})
-                } 
-            })
+                let trip_id = ''
+                let dataRes = []
+                let k = op.length
+                await op.map( async (val,key) => {
+                    trip_id = val.trip_id
+                    
+                    await connection.query(`SELECT * FROM trip3 where trip_id="${trip_id}"`, (err, opt) => {
+                        if(err){
+                            console.log(err)
+                            return res.status(404).json({'msg' : 'Lol'})
+                        }
+                        else{
+                            let dataObj = {
+                                r : opt
+                            }
+                            dataRes.push(dataObj)
+                            if(k === key + 1){
+                                return res.status(200).json({'msg':'Success',data : dataRes})
+                            }
+                            console.log(key,k)
+                        } 
+                    })
+                })
         }
         else{
             return res.status(200).json({data : {}})

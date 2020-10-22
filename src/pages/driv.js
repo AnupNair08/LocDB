@@ -7,7 +7,25 @@ import ReactNotification, { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css'
 
 export default class DriverPage extends Component {
+    getloc = () => {
+        axios({
+            method : 'post',
+            url : 'http://localhost:5000/api/mylocation',
+            data : {
+                driver_id : this.props.data.driver_id
+            }
+        }).then((res) => {
+            console.log(res)
+            this.setState({
+                myloc : res.data.data[0].loc_name,
+                code : res.data.data[0].zipcode
+            })
+        }).catch(e => {
+            console.log(e)
+        })
+    }
     componentDidMount = async () => {
+        
         await axios({
             method : 'post',
             url : 'http://localhost:5000/gettaxi',
@@ -35,7 +53,12 @@ export default class DriverPage extends Component {
                 shifts : res.data.shifts
             })
         })
-        
+
+        await this.getloc()
+    }
+
+    decline = () => {
+        console.log('Shit')
     }
 
     gettrips = () => {
@@ -48,32 +71,23 @@ export default class DriverPage extends Component {
         }).then(res => {
             console.log(res)
             const data = res.data.data
-            const trip_id = data.trip_id
-            const tripDetails = data.r
+            const c = this.state.code
+            data.map((val,k) => {
+                console.log(val)
+                if(val.r[0].from_s != c){
+                    console.log(val.from_s, c)
+                    this.decline()
+                }
+            })
             this.setState({
                 request : true,
-                tripDetails : tripDetails
+                tripDetails : data
             })
         }).catch(e => {
             console.log(e)
         })
     }
-    getloc = () => {
-        axios({
-            method : 'post',
-            url : 'http://localhost:5000/api/mylocation',
-            data : {
-                driver_id : this.props.data.driver_id
-            }
-        }).then((res) => {
-            console.log(res)
-            this.setState({
-                myloc : res.data.data[0].loc_name
-            })
-        }).catch(e => {
-            console.log(e)
-        })
-    }
+    
 
     approve = (trip) => {
         axios({
@@ -97,7 +111,7 @@ export default class DriverPage extends Component {
             <div>
                 <Header></Header>
                 <ReactNotification />
-                <div style = {{display : 'flex', flexDirection : 'row', justifyContent : 'center', alignItems : 'center'}}>
+                <div  style = {{display : 'flex', flexDirection : 'row', justifyContent : 'center', alignItems : 'center'}}>
 
                 <div style= {{display : 'flex' , flexDirection : 'column', justifyContent : 'center', alignItems : 'center'}}>
                 <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" height="200px" width = "200px"></img><br></br>
@@ -109,7 +123,7 @@ export default class DriverPage extends Component {
                     <ListGroupItem className="text-dark">Name: {this.props.data.d_name}</ListGroupItem>
                     <ListGroupItem className="text-dark">Phone Number: {this.props.data.d_phone_no}</ListGroupItem>
                     <ListGroupItem>
-                <Button onClick = {this.getloc}>Get Current Location</Button>
+                <Button color="primary" onClick = {this.getloc}>Get Current Location</Button>
                 {
                     this.state && this.state.myloc ? 
                         <h3 className= "text-dark"><img src = "https://i.pinimg.com/originals/29/93/fd/2993fd151e2e1cab871aec155e22cbcc.png" height="40px" width="30px"></img>   {this.state.myloc}</h3>
@@ -149,14 +163,14 @@ export default class DriverPage extends Component {
                 </div>
                 <div>
                     {/* Display the name and details */}
-                    <Button onClick = {this.gettrips}>Get Trip Requests</Button>
+                    <Button color="primary" onClick = {this.gettrips}>Get Trip Requests</Button>
                     {
                         (this.state && this.state.request) ? this.state.tripDetails.map((val,k) => {
                             return (
                                 <div>
-                                    <h3>{val.user_id}</h3> 
-                                    <Button onClick = {() => this.approve(val.trip_id)}>Approve</Button>
-                                    <Button onClick = {() => this.reject(val.trip_id)}>Approve</Button>
+                                    <h3>{val.r[0].user_id}</h3> 
+                                    <Button onClick = {() => this.approve(val.r[0].trip_id)}>Approve</Button>
+                                    <Button onClick = {() => this.reject(val.r[0].trip_id)}>Approve</Button>
 
                                 </div>
                             )
