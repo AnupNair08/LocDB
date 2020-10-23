@@ -149,9 +149,14 @@ router.post('/getrequests', async(req,res) => {
 
 
 router.post('/approve', async(req,res) => {
-    const {trip_id, start, end,  duration, fare} = req.body
+    const {trip_id, start, end,  duration, fare, user_id} = req.body
     let from_s = ''
     let to_d = ''
+    await connection.query(`INSERT INTO ongoing values("${trip_id}","${user_id}")`,  (e,o) => {
+        if(e){
+            console.log(e)
+        }
+    })
     await connection.query(`SELECT from_s, to_d from trip3 WHERE trip_id="${trip_id}"`,async (e,op) => {
         if(e){
             console.log(e)
@@ -184,14 +189,30 @@ router.post('/approve', async(req,res) => {
 
 router.post('/decline', async(req,res) => {
     const {trip_id} = req.body
-    connection.query(`DELETE FROM trip3 where trip_id="${trip_id}"`,(e,op) => {
+    connection.query(`DELETE FROM trip3 where trip_id="${trip_id}"; DELETE FROM books where trip_id="${trip_id}"`,[1,2],(e,op) => {
+        if(e){
+            console.log(e)
+        }
         res.status(200).json({msg : 'Done'})
     })
 })
 
 router.post('/checkstatus', async(req,res) => {
     const {user_id} = req.body
-    connection.query(`SELECT * FROM trip4 where trip_id in (SELECT trip_id from books where user_id="${user_id}")`)
+    connection.query(`SELECT * FROM ongoing where user_id="${user_id}"`, (e,op) => {
+        if(e) {
+            console.log(e)
+            return res.status(400).json({msg: 'Error'})
+        }
+        else{
+            if(op.length !== 0){
+                return res.status(200).json({'msg' : 'approved'})
+            }
+            else{
+                return res.status(200).json({'msg' : 'Declined'})
+            }
+        }
+    })
 })
 
 module.exports = router

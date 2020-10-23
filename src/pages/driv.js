@@ -25,7 +25,6 @@ export default class DriverPage extends Component {
         })
     }
     componentDidMount = async () => {
-        
         await axios({
             method : 'post',
             url : 'http://localhost:5000/gettaxi',
@@ -66,6 +65,20 @@ export default class DriverPage extends Component {
             }
         }).then(res => {
             console.log(res)
+            this.modalOpen()
+            store.addNotification({
+                title: 'Ride Rejected',
+                message: 'The trip has been rejected',
+                type: 'warning',
+                container: 'top-right',
+                animationIn: ['animated', 'fadeIn'],
+                animationOut: ['animated', 'fadeOut'],
+                dismiss: {
+                  duration: 3000,
+                  pauseOnHover: true
+                }
+              });
+            //   this.gettrips()
         }).catch(e => {
             console.log(e)
         })
@@ -126,9 +139,10 @@ export default class DriverPage extends Component {
         })
     }
     
-    curtrip = (val) => {
+    curtrip = (val,user) => {
         this.setState({
-            c : val
+            c : val,
+            user : user
         })
     }
 
@@ -141,10 +155,24 @@ export default class DriverPage extends Component {
                 start : "09:10:00",
                 end : "09:40:00",
                 duration : this.state.duration,
-                fare : this.state.fare
+                fare : this.state.fare,
+                user_id : this.state.user
             }
         }).then(res => {
             console.log(res)
+            store.addNotification({
+                title: 'Approved successfully',
+                message: 'Ride has been accepted',
+                type: 'success',
+                container: 'top-right',
+                animationIn: ['animated', 'fadeIn'],
+                animationOut: ['animated', 'fadeOut'],
+                dismiss: {
+                  duration: 3000,
+                  pauseOnHover: true
+                }
+              });
+              this.detailtoggle()
         }).catch(e => {
             console.log(e)
         }) 
@@ -204,7 +232,7 @@ export default class DriverPage extends Component {
                 }
                 </div>
                     </ListGroupItem>
-                    <ListGroupItem className="list-group-item list-group-item-action list-group-item-light" ><b>Rating: </b> {this.props.data.rating}<img className="ml-3" src="https://i.dlpng.com/static/png/6908727_preview.png"
+                    <ListGroupItem className="list-group-item list-group-item-action list-group-item-light" ><b>Rating: </b> {this.props.data.rating}<img className="ml-3" src="https://pngimg.com/uploads/star/star_PNG1597.png"
                     height = "20px" width = "20px"></img></ListGroupItem>
                     <ListGroupItem className="list-group-item list-group-item-action list-group-item-light text-dark">
                         <div>
@@ -241,30 +269,29 @@ export default class DriverPage extends Component {
                 <div>
                     {/* Display the name and details */}
                     <Modal isOpen={this.state && this.state.detail} toggle={this.detailtoggle}>
-                        <ModalHeader toggle={this.state && this.state.detail}>Approve the trip</ModalHeader>
+                        <ModalHeader toggle={this.detailtoggle}>Approve the trip</ModalHeader>
                         <ModalBody>
-                        Trip requested by: {this.state && this.state.c}<br></br>
-                        To: 
+                        Trip ID: {this.state && this.state.c}<br></br> 
                         Enter Fare<Input onChange= {this.getfare}></Input>
-                        Enter Duration<Input onChange = {this.getduration}></Input>
+                        Enter Duration(HH:MM:SS)<Input onChange = {this.getduration}></Input>
                         </ModalBody>    
                         <ModalFooter>
                         <Button color="secondary" onClick={this.detailtoggle}>Cancel</Button>
-                        <Button color="secondary" onClick={()=> this.approve(this.state.c)}>Aprove</Button>
+                        <Button color="secondary" onClick={()=> this.approve(this.state.c, this.state.user)}>Aprove</Button>
                         </ModalFooter>
                     </Modal>
                     <Modal isOpen={this.state && this.state.modal} toggle={this.modalOpen} >
                         <ModalHeader toggle={this.modalOpen}>Active Trip Requests</ModalHeader>
                         <ModalBody>
                         {
-                        (this.state && this.state.request) ? this.state.tripDetails.map((val,k) => {
+                        (this.state && this.state.request && this.state.tripDetails) ? this.state.tripDetails.map((val,k) => {
                             return (
                                 <div>
                                     <h3>{val.r[0].user_id}</h3>
-                                    <h3>{val.r[0].user}</h3>
-                                    <h3>{val.r[0].phone}</h3>
-                                    <Button color="success"onClick = {() => {this.curtrip(val.r[0].trip_id) ; this.detailtoggle()}}>Approve</Button>
-                                    <Button color="danger" onClick = {() => this.decline(val.r[0].trip_id)}>Reject</Button>
+                                    <h3>{val.r[0].user && <h3>Name: {val.r[0].user}</h3>}</h3>
+                                    <h3>{val.r[0].phone && <h3>Phone No: {val.r[0].phone}</h3>}</h3>
+                                    <Button color="success"onClick = {() => {this.curtrip(val.r[0].trip_id, val.r[0].user_id) ; this.detailtoggle()}}>Approve</Button>
+                                    <Button color="danger" onClick = {() => this.decline(val.r[0].trip_id, val.r[0].user_id)}>Reject</Button>
                                 </div>
                             )
                         }) : <h1></h1>
