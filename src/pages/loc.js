@@ -28,6 +28,7 @@ export default class Location extends Component {
         })
     }
     toggle = () => {
+        console.log('Hello')
         this.setState({
             open : !this.state.open
         })

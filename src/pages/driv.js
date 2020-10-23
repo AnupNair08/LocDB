@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Header from './header'
-import {ListGroup, ListGroupItem, Button, Dropdown, Card, CardTitle, CardText, Jumbotron} from 'reactstrap'
+import {ListGroup, ListGroupItem, Button, Dropdown, Modal, ModalHeader, ModalFooter, ModalBody, Card, CardTitle, CardText, Jumbotron, Input} from 'reactstrap'
 import axios from 'axios'
 import Location from './loc'
 import ReactNotification, { store } from 'react-notifications-component';
@@ -103,7 +103,6 @@ export default class DriverPage extends Component {
         }).then(async (res) => {
             console.log(res)
             const data = res.data.data
-            const c = this.state.code
             await data.map(async (val,k) => {
                 const userVal = await this.getuser(val.r[0].user_id)
                 // if(val.r[0].from_s == c){
@@ -116,7 +115,6 @@ export default class DriverPage extends Component {
                 val.r[0].phone = userVal.phone
 
             })
-            console.log(data)
             await this.setState({
                 tripDetails : data
             })
@@ -128,6 +126,11 @@ export default class DriverPage extends Component {
         })
     }
     
+    curtrip = (val) => {
+        this.setState({
+            c : val
+        })
+    }
 
     approve = (trip) => {
         axios({
@@ -137,8 +140,8 @@ export default class DriverPage extends Component {
                 trip_id : trip,
                 start : "09:10:00",
                 end : "09:40:00",
-                duration : "00:40:00",
-                fare : 250
+                duration : this.state.duration,
+                fare : this.state.fare
             }
         }).then(res => {
             console.log(res)
@@ -147,7 +150,29 @@ export default class DriverPage extends Component {
         }) 
     }
 
-  
+    modalOpen = () => {
+        this.setState({
+            modal : !this.state.modal
+        })
+    }
+
+    detailtoggle = () => {
+        this.setState({
+            detail : !this.state.detail
+        })
+    }
+
+    getfare = (fare) => {
+        this.setState({
+            fare : fare.target.value
+        })
+    }
+    
+    getduration = (d) => {
+        this.setState({
+            duration : d.target.value
+        })
+    }
     render() {
         return (
             <div>
@@ -215,23 +240,42 @@ export default class DriverPage extends Component {
                 </div>
                 <div>
                     {/* Display the name and details */}
-                    <Button color="primary" onClick = {this.gettrips}>Get Trip Requests</Button>
-                    {
+                    <Modal isOpen={this.state && this.state.detail} toggle={this.detailtoggle}>
+                        <ModalHeader toggle={this.state && this.state.detail}>Approve the trip</ModalHeader>
+                        <ModalBody>
+                        Trip requested by: {this.state && this.state.c}<br></br>
+                        To: 
+                        Enter Fare<Input onChange= {this.getfare}></Input>
+                        Enter Duration<Input onChange = {this.getduration}></Input>
+                        </ModalBody>    
+                        <ModalFooter>
+                        <Button color="secondary" onClick={this.detailtoggle}>Cancel</Button>
+                        <Button color="secondary" onClick={()=> this.approve(this.state.c)}>Aprove</Button>
+                        </ModalFooter>
+                    </Modal>
+                    <Modal isOpen={this.state && this.state.modal} toggle={this.modalOpen} >
+                        <ModalHeader toggle={this.modalOpen}>Active Trip Requests</ModalHeader>
+                        <ModalBody>
+                        {
                         (this.state && this.state.request) ? this.state.tripDetails.map((val,k) => {
                             return (
                                 <div>
-                                    {console.log(val.r[1])}
                                     <h3>{val.r[0].user_id}</h3>
-                                    <h3>val.r[0].user</h3>
+                                    <h3>{val.r[0].user}</h3>
                                     <h3>{val.r[0].phone}</h3>
-
-                                    <Button color="success"onClick = {() => this.approve(val.r[0].trip_id)}>Approve</Button>
+                                    <Button color="success"onClick = {() => {this.curtrip(val.r[0].trip_id) ; this.detailtoggle()}}>Approve</Button>
                                     <Button color="danger" onClick = {() => this.decline(val.r[0].trip_id)}>Reject</Button>
-
                                 </div>
                             )
                         }) : <h1></h1>
                     }
+                        </ModalBody>
+                        <ModalFooter>
+                        <Button color="secondary" onClick={this.modalOpen}>Cancel</Button>
+                        </ModalFooter>
+                    </Modal>
+                    <Button color="primary" onClick = {() => {this.gettrips(); this.modalOpen()}}>Get Trip Requests</Button>
+                    
                 </div>
                      
                 </div>

@@ -73,6 +73,7 @@ router.post('/getuser', async(req,res) => {
 router.post('/booktrip', async(req,res) => {
     const {user_id, taxi_id, from_s, to_d, trip_id} = req.body
     let driver_id = ""
+    
     await connection.query(`INSERT INTO trip3 values("${user_id}","${from_s}","${to_d}","${trip_id}");INSERT INTO trip2 values("${from_s}","${to_d}","00:00:00",0,"${trip_id}");`,[1,2], (e,op) => {
         if(e){
             console.log(e)
@@ -98,7 +99,12 @@ router.post('/booktrip', async(req,res) => {
             })
         }
     })
-    
+    await connection.query(`INSERT INTO books values("${trip_id}","${user_id}")`, (e,op) => {
+        if(e){
+            console.log(e)
+            return res.status(404).json({'msg' : 'Error'})
+        }
+    })    
 })
 
 router.post('/getrequests', async(req,res) => {
@@ -181,6 +187,11 @@ router.post('/decline', async(req,res) => {
     connection.query(`DELETE FROM trip3 where trip_id="${trip_id}"`,(e,op) => {
         res.status(200).json({msg : 'Done'})
     })
+})
+
+router.post('/checkstatus', async(req,res) => {
+    const {user_id} = req.body
+    connection.query(`SELECT * FROM trip4 where trip_id in (SELECT trip_id from books where user_id="${user_id}")`)
 })
 
 module.exports = router
