@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 import DriverPage from './driv'
-import { Card, Button, CardHeader, CardFooter, CardBody,
+import {  CardHeader, CardFooter, CardBody,
     CardTitle, CardText } from 'reactstrap';
+import {Input} from 'baseui/input'
+import { Card} from 'baseui/card'
+import { Button} from 'baseui/button'
+
 import axios from 'axios'
 export default class Driver extends Component {
     constructor(props){
@@ -49,22 +53,22 @@ export default class Driver extends Component {
                             <h1 className="display-3">
                                 Welcome to LocDB!
                             </h1>
-                                <img src="https://dmm40cf0lyret.cloudfront.net/wp-content/uploads/2020/08/desarrollo-app-taxi.jpg" height= "400px" width="600px"></img>
-                            <div>
-                            <Card>
+                            <div style={{display: 'flex',flexDirection : 'column', justifyContent : 'center', alignItems:'center'}}> 
+                            <img src="https://dmm40cf0lyret.cloudfront.net/wp-content/uploads/2020/08/desarrollo-app-taxi.jpg" height= "200px" width="300px"></img>
+                            <Card className="w-100">
                                 <CardHeader><h3>Login to continue</h3></CardHeader>
                                 <CardBody>
                                 <h2 className="lead">Enter name: 
-                                <input style={{marginLeft : "45px"}} onChange = {this.handlename}></input>
+                                <Input  onChange = {this.handlename}></Input>
                                 </h2>
                                 <h2 className="lead">Enter password:
-                                <input className="ml-3" type="password" onChange = {this.handlepass}></input><br></br>
+                                <Input  type="password" onChange = {this.handlepass}></Input><br></br>
 
                                 </h2>
                                 </CardBody>
                                 <CardFooter></CardFooter>
                             </Card>    
-                            <Button color = "success" className="mt-3" onClick = {this.login}>Login</Button>
+                            <Button kind = "secondary" className="mt-3 mb-5" onClick = {this.login}>Login</Button>
                             </div>
                     </div> : <DriverPage data = {this.state.data}/>
                 }

@@ -30,7 +30,7 @@ export default class User extends Component {
             <div>
                 <Header></Header>
                 {/* <div style= {{display : 'flex' , flexDirection : 'row', justifyContent : 'center', alignItems : 'center'}}> */}
-                <Jumbotron>
+                <Jumbotron style={{paddingLeft : "0", paddingRight : "0"}}>
                 <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" height="200px" width = "200px"></img>
                     <h1 className="display-3">Hello, [UserName]</h1>
                     <p className="lead">LocDB lets you book a trip and see nearby taxis</p>

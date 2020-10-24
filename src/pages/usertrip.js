@@ -185,9 +185,9 @@ export default class UserLocation extends Component {
             }
             else{
                 store.addNotification({
-                    title: 'Trip declined',
-                    message: 'Please book again',
-                    type: 'danger',
+                    title: 'Oops no pending trips!',
+                    message: 'There are no pending trips',
+                    type: 'warning',
                     container: 'top-right',
                     animationIn: ['animated', 'fadeIn'],
                     animationOut: ['animated', 'fadeOut'],
@@ -259,7 +259,7 @@ export default class UserLocation extends Component {
     } 
     ratingChanged = (e) => {
         this.setState({
-            rating : e
+            rating : e.value
         })
     }
 
@@ -402,16 +402,16 @@ export default class UserLocation extends Component {
                         </Card>
                     </Collapse>                       */}
             </div>
-            <Button color="danger" onClick={this.getreq}>Check my Trip Requests</Button>
+            <Button kind="secondary" onClick={this.getreq} className="lead">Check my Trip Requests</Button>
             {this.state.approved &&  <div>
                 <Card className="mt-5">
                     <StyledTitle>
                         <h3 className="display-4">Ongoing  Trip</h3>
                     </StyledTitle>
                         <StyledBody>
-                            <div style={{display : 'flex' ,flexDirection : 'row', justifyContent :'center', alignItems:'center'}}>
+                            <div style={{display : 'flex',flexDirection : 'row', justifyContent :'center', alignItems:'center'}}>
 
-                            <div style={{textAlign : 'left', marginRight : "40px"}}>
+                            <div style={{textAlign : 'left',  marginRight : "40px"}}>
                             
                             <h3><img src="https://www.pngkit.com/png/full/14-146161_white-location-icon-png-location-logo-png-white.png" height="40px" width="40px"></img> To: {this.parseZip(this.state.ogtrip.to_d)}</h3>
                             <h3><img src="https://www.pngkit.com/png/full/14-146161_white-location-icon-png-location-logo-png-white.png" height="40px" width="40px"></img> From: {this.parseZip(this.state.ogtrip.from_s)}</h3>

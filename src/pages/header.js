@@ -7,7 +7,7 @@ export default class Header extends Component {
         <Navbar
           position="static"
           variant="elevation"
-          style={{ backgroundColor: '#000033' }}>
+          style={{ backgroundColor: '#333333' }}>
             <h5 className="text-light" >LocDB</h5>
         </Navbar>
       </div>
