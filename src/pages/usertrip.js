@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Dropdown, DropdownToggle, DropdownMenu,Button, Collapse, Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import ReactNotification, { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css'
+import ReactStars from "react-rating-stars-component";
 
 export default class UserLocation extends Component {
     constructor(props){
@@ -19,7 +20,8 @@ export default class UserLocation extends Component {
             isOpen : false,
             user_id : "123",
             approved : false,
-            txmodal : false
+            txmodal : false,
+            endModal : false
         }
     }
     componentDidMount = async () => {
@@ -94,7 +96,38 @@ export default class UserLocation extends Component {
         })
     }
 
-    getreq = () => {
+    getongoing = async (trip) => {
+        console.log(trip)
+        await axios({
+            method : 'post',
+            url : 'http://localhost:5000/api/curtrip',
+            data : {
+                trip_id : trip
+            }
+        }).then(res => {
+            console.log(res)
+            this.setState({
+                ogtrip : res.data.ongoing[0]
+            })
+        }).catch(e => {
+            console.log(e)
+        })
+    }
+    getreq = async () => {
+        if(localStorage.getItem("last") === null){
+            await axios({
+                method : 'post',
+                url : 'http://localhost:5000/api/getongoing',
+                data : {
+                    user_id : this.state.user_id
+                }
+            }).then(res => {
+                console.log(res.data.ongoing[0].trip_id)
+                localStorage.setItem("last",res.data.ongoing[0].trip_id)
+            }).catch(e => {
+                console.log(e)
+            })
+        }
         axios({
             method:'post',
             url : 'http://localhost:5000/api/checkstatus',
@@ -102,12 +135,10 @@ export default class UserLocation extends Component {
                 user_id : this.state.user_id,
                 trip_id : localStorage.getItem("last")
             }
-        }).then(res => {
+        }).then(async res => {
             if(res.data.msg === "approved"){
                 console.log('trip was approved')
-                this.setState({
-                    approved : true
-                })
+                await this.getongoing(localStorage.getItem("last"))
                 store.addNotification({
                     title: 'Request was approved by driver',
                     message: 'Taxi was booked',
@@ -119,7 +150,11 @@ export default class UserLocation extends Component {
                     duration: 3000,
                     pauseOnHover: true
                 }    
+            })
+                this.setState({
+                    approved : true
                 })
+                localStorage.clear("last")
                 console.log('Approved')
             
             }
@@ -158,7 +193,14 @@ export default class UserLocation extends Component {
                 this.setState({
                     approved: false
                 })
+                // localStorage.clear("last")
             }
+        })
+    }
+
+    toggleEnd = () => {
+        this.setState({
+            endModal : !this.state.endModal
         })
     }
 
@@ -208,6 +250,53 @@ export default class UserLocation extends Component {
             console.log(e)
         })
     } 
+    ratingChanged = (e) => {
+        this.setState({
+            rating : e
+        })
+    }
+
+    parseDuration = (d) => {
+        const h = d.slice(0,2)
+        const m = d.slice(3,5)
+        if(h === "00"){
+            return `${m} Minute(s)`
+        }
+        return `${h} Hours ${m} Minute(s)`
+    }
+
+    parseZip = (z) => {
+        const name = this.state.location.map((val,key) => {
+            if(val.zipcode === z){
+                return val.loc_name
+            }
+        })
+        return name
+    }
+
+    done = () => {
+        const data = {
+            rating : this.state.rating,
+            trip_id : this.state.ogtrip.trip_id
+        }
+        axios({
+            method : 'post',
+            url : 'http://localhost:5000/api/setrating',
+            data : data
+        }).then(res => {
+            console.log(res)
+            store.addNotification({
+                title : 'Trip ended successfully',
+                message : 'Thank you for the trip',
+                type : 'success'
+            })
+            this.getongoing()
+        }).catch(e => {
+            console.log(e)
+        })
+
+    }
+
     render() {
         return (
             <div>
@@ -294,6 +383,26 @@ export default class UserLocation extends Component {
             <Button color="danger" onClick={this.getreq}>Check my Trip Requests</Button>
             {this.state.approved &&  <div>
                     Ongoing  Trip
+            <h3>To: {this.parseZip(this.state.ogtrip.to_d)}</h3>
+            <h3>From: {this.parseZip(this.state.ogtrip.from_s)}</h3>
+            <h3>Duration: {this.parseDuration(this.state.ogtrip.duration)}</h3>
+            <h3>Fare: ₹{this.state.ogtrip.fare}</h3>
+                    <Button onClick={this.toggleEnd}>End Trip</Button>
+                    <Modal isOpen = {this.state.endModal} toggle = {this.toggleEnd}>
+                        <ModalHeader>Complete Trip</ModalHeader>
+                        <ModalBody>
+                            <h5 className="display-4">Thank you for riding with us.</h5>
+                        <h3>Rate your trip</h3>
+                    <ReactStars count={5} 
+                            onChange={this.ratingChanged} 
+                            size={32}
+                            activeColor="#ffd700" />,
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="success" onClick = {() => {this.done() ;this.toggleEnd()}}>Done</Button>
+                            <Button color = "primary" onClick={this.toggleEnd}>Cancel</Button>
+                        </ModalFooter>
+                    </Modal>
                 </div>}
             </div>
         )

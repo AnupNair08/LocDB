@@ -198,7 +198,7 @@ router.post('/decline', async(req,res) => {
 
 router.post('/checkstatus', async(req,res) => {
     const {user_id, trip_id} = req.body
-    
+    console.log(user_id, trip_id)
     connection.query(`SELECT * FROM ongoing where user_id="${user_id}"`, (e,op) => {
         if(e) {
             console.log(e)
@@ -209,17 +209,18 @@ router.post('/checkstatus', async(req,res) => {
                 return res.status(200).json({'msg' : 'approved'})
             }
             else{
-                connection.query(`SELECT * FROM trip4 where trip_id="${trip_id} and status=0"`, (err,opt) => {
+                connection.query(`SELECT * FROM trip4 where trip_id="${trip_id}" and status=0`, (err,opt) => {
                     if(err){
                         console.log(err)
                     }
-                    else{
-                        if(opt.length !== 0){
+                    else if(opt.length !== 0){
+                            console.log('in')
                             return res.status(200).json({'msg' : 'wait'})
-                        }
+                    }
+                    else{
+                        return res.status(200).json({'msg' : 'declined'})
                     }
                 })
-                return res.status(200).json({'msg' : 'declined'})
             }
         }
     })
@@ -240,5 +241,43 @@ insert into present_at values("${driver_id}","410078");
 
 `
     connection.query()
+})
+
+router.post('/curtrip', async(req,res) => {
+    const {trip_id } = req.body
+    connection.query(`SELECT * FROM trip2 where trip_id="${trip_id}"`, (e,op) => {
+        if(e){
+            console.log(e)
+            return res.status(400).json({'msg' : 'Error'})
+        }
+        else{
+            return res.status(200).json({ongoing : op})
+        }
+    })
+})
+
+router.post('/setrating', async(req,res) => {
+    const {rating , trip_id} = req.body
+    connection.query(`UPDATE trip4 set rating="${rating}" where trip_id="${trip_id}";DELETE from ongoing where trip_id="${trip_id}"`,[1,2], (e,op) => {
+        if(e){
+            console.log(e)
+            return res.status(400).json({'msg' : 'Error'})
+        }
+        return res.status(200).json({'msg' : 'Updated'})
+    })
+
+})
+
+router.post('/getongoing', async(req,res) => {
+    const {user_id} = req.body
+
+    connection.query(`SELECT trip_id from ongoing where user_id="${user_id}";`, (e,op) => {
+        if(e){
+            console.log(e)
+        }
+        else{
+            return res.status(200).json({ongoing : op})
+        }
+    })
 })
 module.exports = router
