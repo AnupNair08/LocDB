@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Dropdown, DropdownToggle, DropdownMenu,Button, Collapse, Card, CardBody } from 'reactstrap';
+import { Dropdown, DropdownToggle, DropdownMenu,Button, Collapse, Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import ReactNotification, { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css'
 
@@ -18,7 +18,8 @@ export default class UserLocation extends Component {
             startN : '',
             isOpen : false,
             user_id : "123",
-            approved : false
+            approved : false,
+            txmodal : false
         }
     }
     componentDidMount = async () => {
@@ -37,6 +38,12 @@ export default class UserLocation extends Component {
     toggle = () => {
         this.setState({
             open : !this.state.open
+        })
+    }
+    
+    txmodal = () => {
+        this.setState({
+            txmodal : !this.state.txmodal
         })
     }
     endtoggle = () => {
@@ -62,7 +69,7 @@ export default class UserLocation extends Component {
             }
         }).then((res) => {
             console.log(res)
-            if(res.status == 200 && res.data.taxi.length != 0){
+            if(res.status === 200 && res.data.taxi.length !== 0){
                 this.setState({
                     nearby : res.data.taxi
                 })
@@ -205,7 +212,7 @@ export default class UserLocation extends Component {
         return (
             <div>
 
-            <div className="ml-5" style= {{width : '40vw', display : 'flex', flexDirection : 'column', justifyContent:'center', alignItems :'center'}}>
+            <div style= {{display : 'flex', flexDirection : 'column', justifyContent:'center', alignItems :'center'}}>
                 <Button color="primary" className="lead" onClick={this.toggleOpen} style={{ marginBottom: '1rem' }}>Start a New Trip</Button>
                     <Collapse isOpen={this.state.isOpen}>
                         <Card>
@@ -251,26 +258,40 @@ export default class UserLocation extends Component {
                 </DropdownMenu>
                 </Dropdown>
                     </div>
-                <Button color="success" className="mt-5" onClick = {this.gettaxi}>
+                <Button color="success" className="mt-5" onClick = {() => {this.gettaxi(); this.txmodal()}}>
                     Check for taxis
                 </Button>
-                {
-                    !this.state.request && this.state.nearby.map((val,k) => {
-                        return (
-                            <div>
-                            <h1>{val.taxi_id}</h1>
-                            <Button onClick={() => this.book(val.taxi_id)}>Book</Button>
-                        </div>
+                <Modal isOpen = {this.state.txmodal} toggle = {this.txmodal}>
+                    <ModalHeader>
+                        <img src="https://cdn4.iconfinder.com/data/icons/mobile-shopping-pack/512/gps-512.png" height="40px" width="40px"></img>    
+                        Nearby Taxis
+                    </ModalHeader>
+                    
+                    <ModalBody>
+                        <h3 className="text-muted">Drivers within 3KM</h3>
+                        {
+                            !this.state.request && this.state.nearby.map((val,k) => {
+                                return (
+                                    <div style={{display : 'flex', flexDirection : 'column', justifyContent : 'center', alignItems : 'center'}}>
+                                <h3 className="lead"><b>Driver Name:</b> {val.d_name}</h3>
+                                <h3 className="lead"><b>Phone no:</b> {val.d_phone_no}</h3>
+                                <h3 className="lead"><b>Model:</b> {val.model} Taxi number: {val.number} Color: {val.color}</h3>
+                                    <Button onClick={() => this.book(val.taxi_id)}>Book</Button>
+                                </div>
+                            )
 
-)
-
-})
-}
+                        })
+                        }
+                    </ModalBody>
+                <ModalFooter>
+                    <Button onClick= {this.txmodal}>Done</Button>
+                </ModalFooter>
+                </Modal>
                         </CardBody>
                         </Card>
                     </Collapse>                      
             </div>
-            <Button onClick={this.getreq}>Check my Trip Requests</Button>
+            <Button color="danger" onClick={this.getreq}>Check my Trip Requests</Button>
             {this.state.approved &&  <div>
                     Ongoing  Trip
                 </div>}
