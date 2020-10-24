@@ -6,6 +6,9 @@ import UserLocation from './usertrip'
 export default class User extends Component {
     constructor(props){
         super(props)
+        this.state = {
+            user_id : "123"
+        }
     }
     componentDidMount = () => {
         // axios({
@@ -20,6 +23,7 @@ export default class User extends Component {
         //     console.log(e)
         // })
     }
+    
     render() {
         console.log(this.props)
         return (

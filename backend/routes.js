@@ -198,7 +198,8 @@ router.post('/decline', async(req,res) => {
 })
 
 router.post('/checkstatus', async(req,res) => {
-    const {user_id} = req.body
+    const {user_id, trip_id} = req.body
+    
     connection.query(`SELECT * FROM ongoing where user_id="${user_id}"`, (e,op) => {
         if(e) {
             console.log(e)
@@ -209,10 +210,36 @@ router.post('/checkstatus', async(req,res) => {
                 return res.status(200).json({'msg' : 'approved'})
             }
             else{
-                return res.status(200).json({'msg' : 'Declined'})
+                connection.query(`SELECT * FROM trip4 where trip_id="${trip_id} and status=0"`, (err,opt) => {
+                    if(err){
+                        console.log(err)
+                    }
+                    else{
+                        if(opt.length !== 0){
+                            return res.status(200).json({'msg' : 'wait'})
+                        }
+                    }
+                })
+                return res.status(200).json({'msg' : 'declined'})
             }
         }
     })
 })
 
+router.post('/addnew', async(req,res) => {
+    const {driver_id, taxi_id, d_name, d_phone_no, rating, number, color, model, cclass, capacity} = req.body
+    
+    const sql = `insert into taxi1 values("${taxi_id}","${color}","${number}", "${driver_id}","${model}");
+insert into taxi2 values("${taxi_id}","${model}");
+insert into taxi3 values("${model}", ${capacity}, "${cclass}");
+insert into driver1 values("${driver_id}","${d_name}","${d_phone_no}","${taxi_id}",${rating});
+insert into driver2 values("${taxi_id}","${d_phone_no}");
+insert into driver3 values("${d_phone_no}","${d_name}");
+insert into works values("${driver_id}","2");
+insert into drives values("${driver_id}","${taxi_id}");
+insert into present_at values("${driver_id}","410078");
+
+`
+    connection.query()
+})
 module.exports = router
