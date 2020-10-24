@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import User from './userpage'
-import {Button, Modal , ModalBody, ModalFooter, Input ,ModalHeader} from 'reactstrap'
+import {Button, Modal , ModalBody, ModalFooter,ModalHeader} from 'reactstrap'
 import ReactNotification, { store } from 'react-notifications-component';
+import {Input} from 'baseui/input'
 import 'react-notifications-component/dist/theme.css'
 export default class Customer extends Component {
     constructor(props){
@@ -116,9 +117,9 @@ export default class Customer extends Component {
                             </h1>
                             <h2>Login to continue</h2>
                             <p>Enter name</p>
-                            <input  onChange = {this.handlename}></input>
+                            <Input  onChange = {this.handlename}></Input>
                             <p>Enter password</p>
-                            <input  type="password" onChange = {this.handlepass}></input><br></br>
+                            <Input  type="password" onChange = {this.handlepass}></Input><br></br>
                             <Button color = "success" className="mt-3" onClick = {this.login}>Login</Button>
                             <p>
                                 <h2 className= "mt-5">

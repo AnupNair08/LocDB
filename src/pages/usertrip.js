@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Dropdown, DropdownToggle, DropdownMenu,Button, Collapse, Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import ReactNotification, { store } from 'react-notifications-component';
+import { Dropdown, DropdownToggle, DropdownMenu  } from 'reactstrap';
+import {Modal, ModalHeader, ModalBody, ModalFooter} from 'baseui/modal'
+import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css'
-import ReactStars from "react-rating-stars-component";
+import {Card, StyledBody, StyledTitle} from 'baseui/card'
+import { PaymentCard } from "baseui/payment-card";
+import { StarRating } from "baseui/rating";
+import {Drawer} from 'baseui/drawer'
+import {Button} from 'baseui/button'
 
 export default class UserLocation extends Component {
     constructor(props){
@@ -21,7 +26,9 @@ export default class UserLocation extends Component {
             user_id : "123",
             approved : false,
             txmodal : false,
-            endModal : false
+            endModal : false,
+            card : "",
+            rating : 1
         }
     }
     componentDidMount = async () => {
@@ -297,59 +304,69 @@ export default class UserLocation extends Component {
 
     }
 
+    setcard = (c) => {
+        this.setState({
+            card : c.target.value
+        })
+    }
+
     render() {
         return (
             <div>
 
             <div style= {{display : 'flex', flexDirection : 'column', justifyContent:'center', alignItems :'center'}}>
                 <Button color="primary" className="lead" onClick={this.toggleOpen} style={{ marginBottom: '1rem' }}>Start a New Trip</Button>
-                    <Collapse isOpen={this.state.isOpen}>
-                        <Card>
-                        <CardBody>
+                <Drawer
+                    isOpen={this.state.isOpen}
+                    autoFocus
+                    onClose={this.toggleOpen}
+                >
+                <div style={{display : 'flex' , flexDirection : 'column', justifyContent : 'center', alignItems : 'center'}}>
                         <div>
-                    <h3 className="lead">Start</h3>
-                 <Dropdown id="start" isOpen={this.state.open} toggle={this.toggle}>
-                    <DropdownToggle caret>
-                    {this.state.startN !== '' ? <h6>{this.state.startN}</h6> : <h6>Select Start</h6>}
-                    {/* Select Start */}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        {this.state.location && this.state.location.map((k,val) => {
-                            return (
-                                <div style = {{display : 'flex', flexDirection : 'row', justifyContent : 'center' , alignItems : 'center'}} className = "w-100">
-                                    <Button color="white" onClick={() => this.getinput1(k.zipcode,k.loc_name)} header>{k.loc_name}</Button>
-                                    <br></br>
-                                </div>
-                            ) 
-                        })}
-                    </DropdownMenu>
-                </Dropdown>
-                </div>
+                            <h3 className="lead">Source</h3>
+                            <Dropdown id="start" isOpen={this.state.open} toggle={this.toggle}>
+                                <DropdownToggle caret>
+                                {this.state.startN !== '' ? <h6>{this.state.startN}</h6> : <h6>Select Source</h6>}
+                                {/* Select Start */}
+                                </DropdownToggle>
+                                <DropdownMenu>
+                                    {this.state.location && this.state.location.map((k,val) => {
+                                        return (
+                                            <div style = {{display : 'flex', flexDirection : 'row', justifyContent : 'center' , alignItems : 'center'}} className = "w-100">
+                                                <Button color="white" onClick={() => this.getinput1(k.zipcode,k.loc_name)} header>{k.loc_name}</Button>
+                                                <br></br>
+                                            </div>
+                                        ) 
+                                    })}
+                                </DropdownMenu>
+                            </Dropdown>
+                        </div>
                     <div>
-                    <h3 className="lead">End</h3>
-                <Dropdown id = "end" isOpen={this.state.endopen} toggle={this.endtoggle}>
-                   <DropdownToggle caret>
-                {this.state.endN !== '' ? <h6>{this.state.endN}</h6> : <h6>Select End</h6>}
-                {/* Select End */}
+                        <h3 className="lead">Destination</h3>
+                        <Dropdown id = "end" isOpen={this.state.endopen} toggle={this.endtoggle}>
+                        <DropdownToggle caret>
+                        {this.state.endN !== '' ? <h6>{this.state.endN}</h6> : <h6>Select Destination</h6>}
+                        {/* Select End */}
 
-                    </DropdownToggle>
-                <DropdownMenu>
-                    {this.state.location && this.state.location.map((k,val) => {
-                        return (
-                            <div style = {{display : 'flex', flexDirection : 'row', justifyContent : 'center' , alignItems : 'center'}} className = "w-100">
-                                <Button color="white" key={k} onClick={() => this.getinput2(k.zipcode,k.loc_name)} header>{k.loc_name}</Button>
-                                <br></br>
-                            </div>
-                        ) 
-                    })}
-                    
-                
-                </DropdownMenu>
-                </Dropdown>
+                            </DropdownToggle>
+                        <DropdownMenu>
+                            {this.state.location && this.state.location.map((k,val) => {
+                                return (
+                                    <div style = {{display : 'flex', flexDirection : 'row', justifyContent : 'center' , alignItems : 'center'}} className = "w-100">
+                                        <Button color="white" key={k} onClick={() => this.getinput2(k.zipcode,k.loc_name)} header>{k.loc_name}</Button>
+                                        <br></br>
+                                    </div>
+                                ) 
+                            })}
+                            
+                        
+                        </DropdownMenu>
+                        </Dropdown>
                     </div>
                 <Button color="success" className="mt-5" onClick = {() => {this.gettaxi(); this.txmodal()}}>
                     Check for taxis
                 </Button>
+                <img className="mt-5" src="https://icon-library.com/images/location-icon-white-png/location-icon-white-png-12.jpg" height="200px" width="200px"></img>
                 <Modal isOpen = {this.state.txmodal} toggle = {this.txmodal}>
                     <ModalHeader>
                         <img src="https://cdn4.iconfinder.com/data/icons/mobile-shopping-pack/512/gps-512.png" height="40px" width="40px"></img>    
@@ -376,33 +393,62 @@ export default class UserLocation extends Component {
                     <Button onClick= {this.txmodal}>Done</Button>
                 </ModalFooter>
                 </Modal>
+                </div>
+                </Drawer>
+                    {/* <Collapse isOpen={this.state.isOpen}>
+                        <Card>
+                        <CardBody>
                         </CardBody>
                         </Card>
-                    </Collapse>                      
+                    </Collapse>                       */}
             </div>
             <Button color="danger" onClick={this.getreq}>Check my Trip Requests</Button>
             {this.state.approved &&  <div>
-                    Ongoing  Trip
-            <h3>To: {this.parseZip(this.state.ogtrip.to_d)}</h3>
-            <h3>From: {this.parseZip(this.state.ogtrip.from_s)}</h3>
-            <h3>Duration: {this.parseDuration(this.state.ogtrip.duration)}</h3>
-            <h3>Fare: ₹{this.state.ogtrip.fare}</h3>
-                    <Button onClick={this.toggleEnd}>End Trip</Button>
-                    <Modal isOpen = {this.state.endModal} toggle = {this.toggleEnd}>
-                        <ModalHeader>Complete Trip</ModalHeader>
-                        <ModalBody>
-                            <h5 className="display-4">Thank you for riding with us.</h5>
-                        <h3>Rate your trip</h3>
-                    <ReactStars count={5} 
-                            onChange={this.ratingChanged} 
-                            size={32}
-                            activeColor="#ffd700" />,
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="success" onClick = {() => {this.done() ;this.toggleEnd()}}>Done</Button>
-                            <Button color = "primary" onClick={this.toggleEnd}>Cancel</Button>
-                        </ModalFooter>
-                    </Modal>
+                <Card className="mt-5">
+                    <StyledTitle>
+                        <h3 className="display-4">Ongoing  Trip</h3>
+                    </StyledTitle>
+                        <StyledBody>
+                            <div style={{display : 'flex' ,flexDirection : 'row', justifyContent :'center', alignItems:'center'}}>
+
+                            <div style={{textAlign : 'left', marginRight : "40px"}}>
+                            
+                            <h3><img src="https://www.pngkit.com/png/full/14-146161_white-location-icon-png-location-logo-png-white.png" height="40px" width="40px"></img> To: {this.parseZip(this.state.ogtrip.to_d)}</h3>
+                            <h3><img src="https://www.pngkit.com/png/full/14-146161_white-location-icon-png-location-logo-png-white.png" height="40px" width="40px"></img> From: {this.parseZip(this.state.ogtrip.from_s)}</h3>
+                            <h3><img src="https://icon-library.com/images/white-clock-icon-png/white-clock-icon-png-24.jpg" height="40px" width="40px"></img> Duration: {this.parseDuration(this.state.ogtrip.duration)}</h3>
+                            <h3><img src="https://www.iconsdb.com/icons/preview/white/indian-rupee-xxl.png" height="40px" width="40px"></img> Fare: ₹{this.state.ogtrip.fare}</h3>
+                            </div>
+                            <div>
+                                <img src="https://lh3.googleusercontent.com/proxy/QVUAYjrr_QYPjhA5SR2xzKzHNm2U-4adeBf4UstTHy7fEZheBzG21SQE1U5J2CpIfNwFSAZZiLmkYX3qr7P_OcFHyvQbRtIifSe36xewNeeP4_JV0bTv2_8H-GrDe65ouPewt1TfNgBWWisGtWKkQiLN" width="240px" height="100px"></img>
+                            </div>
+                            </div>
+                        <Button onClick={this.toggleEnd}>End Trip</Button>
+                        <Modal isOpen = {this.state.endModal} closeable animate autofocus onClose = {this.toggleEnd}>
+                            <ModalHeader>Complete Trip</ModalHeader>
+                            <ModalBody>
+                                <h5 className="display-4">Thank you for riding with us.</h5>
+                                <h5>Enter card number to complete payment</h5>
+                                <PaymentCard 
+                                clearOnEscape
+                                placeholder="Please enter your credit card number..."
+                                    value = {this.state.card}
+                                    onChange = {this.setcard}
+                                    >
+                                </PaymentCard>
+                            <h3>Rate your trip</h3>
+                            <StarRating numItems={5} 
+                                onChange={this.ratingChanged} 
+                                size={32}
+                                value = {this.state.rating}
+                                />
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="success" onClick = {() => {this.done() ;this.toggleEnd()}}>Done</Button>
+                                <Button color = "primary" onClick={this.toggleEnd}>Cancel</Button>
+                            </ModalFooter>
+                        </Modal>
+                        </StyledBody>
+                </Card>
                 </div>}
             </div>
         )
