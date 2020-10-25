@@ -7,7 +7,7 @@ export default class User extends Component {
     constructor(props){
         super(props)
         this.state = {
-            user_id : "123"
+            user_id : this.props.user_id
         }
     }
     componentDidMount = () => {

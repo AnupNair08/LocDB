@@ -8,7 +8,6 @@ import Admin from './pages/admin';
 import {Client as Styletron} from 'styletron-engine-atomic';
 import {Provider as StyletronProvider} from 'styletron-react';
 import {DarkTheme, BaseProvider, styled} from 'baseui';
-import {StatefulInput} from 'baseui/input';
 import  { Route, BrowserRouter } from 'react-router-dom'
 const engine = new Styletron();
 const Centered = styled('div', {

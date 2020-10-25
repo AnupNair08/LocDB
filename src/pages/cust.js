@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import User from './userpage'
-import {Button, Modal , ModalBody, ModalFooter,ModalHeader} from 'reactstrap'
+import { Modal , ModalBody, ModalFooter,ModalHeader} from 'reactstrap'
 import ReactNotification, { store } from 'react-notifications-component';
-import {Input} from 'baseui/input'
+import { Input} from 'baseui/input'
+import {Button} from 'baseui/button'
 import 'react-notifications-component/dist/theme.css'
 export default class Customer extends Component {
     constructor(props){
@@ -110,47 +111,50 @@ export default class Customer extends Component {
             <div>
                 <ReactNotification />
                 {
-                    this.state.login ? 
-           (             <div className = "mt-5">
-                            <h1>
-                                Welcome to LocDB!
-                            </h1>
-                            <h2>Login to continue</h2>
-                            <p>Enter name</p>
-                            <Input  onChange = {this.handlename}></Input>
-                            <p>Enter password</p>
-                            <Input  type="password" onChange = {this.handlepass}></Input><br></br>
-                            <Button color = "success" className="mt-3" onClick = {this.login}>Login</Button>
-                            <p>
-                                <h2 className= "mt-5">
-                            New User?<br></br>
-                            
-                            {
-                                !this.state.register && 
-                                <Button color="primary" onClick = {this.toggle}>Register Now</Button>
+                    !this.state.login ? 
+           (             <div className = "mt-5" style= {{display: 'flex' , flexDirection : 'column', justifyContent :'center', alignItems : 'center'}}>
+                            <div style={{width : '40vw'}}>
 
-                            }
-                                </h2>
-                            </p>
-                            <Modal isOpen={this.state.modal} toggle={this.toggle} >
-                            <ModalHeader toggle={this.state.toggle}>Register to LocDB</ModalHeader>
-                            <ModalBody>
-                                <p>Enter name</p>
-                                <Input onChange = {this.handlename}></Input>
-                                <p>Enter password</p>
-                                <Input onChange = {this.handlepass}></Input>
-                                <p>Enter phone number</p>
-                                <Input onChange = {this.handleph}></Input>
-                                <p>Enter address</p>
-                                <Input onChange = {this.handleadd}></Input><br></br>
+                                <h1 className="display-3">
+                                    Welcome to LocDB!
+                                </h1>
+                                <h2>Login to continue</h2>
+                                <h5>Enter name</h5>
+                                <Input  onChange = {this.handlename}></Input>
+                                <h5>Enter password</h5>
+                                <Input  type="password" onChange = {this.handlepass}></Input><br></br>
+                                <Button kind = "secondary" className="mt-3" onClick = {this.login}>Login</Button>
+                                <p>
+                                    <h2 className= "mt-5">
+                                New User?<br></br>
+                                
+                                {
+                                    !this.state.register && 
+                                    <Button kind="secondary" onClick = {this.toggle}>Register Now</Button>
+
+                                }
+                                    </h2>
+                                </p>
+                                <Modal isOpen={this.state.modal} toggle={this.toggle} >
+                                <ModalHeader toggle={this.state.toggle}>Register to LocDB</ModalHeader>
+                                <ModalBody>
+                                    <p>Enter name</p>
+                                    <Input onChange = {this.handlename}></Input>
+                                    <p>Enter password</p>
+                                    <Input onChange = {this.handlepass}></Input>
+                                    <p>Enter phone number</p>
+                                    <Input onChange = {this.handleph}></Input>
+                                    <p>Enter address</p>
+                                    <Input onChange = {this.handleadd}></Input><br></br>
+                                    {this.state.register && <h3>Registered successfully!</h3>}
+                            </ModalBody>
+                            <ModalFooter>
                                 <Button onClick = {this.register}>Register</Button>
-                                {this.state.register && <h3>Registered successfully!</h3>}
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                       </ModalFooter>
+                                <Button kind="secondary" onClick={this.toggle}>Cancel</Button>
+                        </ModalFooter>
 
-                            </Modal>
+                                </Modal>
+                            </div>
 
                         </div>) : (
                             <div>

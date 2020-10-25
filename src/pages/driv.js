@@ -214,10 +214,9 @@ export default class DriverPage extends Component {
                 <div className="lead">
                     <ReactNotification />
                     <div  style = {{display : 'flex', flexDirection : 'row', justifyContent : 'center', alignItems : 'center'}}>
-
                     <Card className="w-100" body inverse>
                     <div style= {{display : 'flex' , flexDirection : 'column', justifyContent : 'center', alignItems : 'center'}}>
-                    <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" height="200px" width = "200px"></img><br></br>
+                        <img alt ="profile" src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" height="200px" width = "200px"></img><br></br>
                         <h3>Hello {this.props.data.d_name}</h3>
                     </div>
                         <CardTitle className ="text-light"><h2 className="display-4">My Profile</h2></CardTitle>
@@ -229,8 +228,8 @@ export default class DriverPage extends Component {
                     <Button kind="secondary" className="mr-5" onClick = {this.getloc}>Get Current Location</Button>
                     {
                         this.state && this.state.myloc ? 
-                            <h3 className= "text-light"><img src = "https://i.pinimg.com/originals/29/93/fd/2993fd151e2e1cab871aec155e22cbcc.png" height="40px" width="40px"></img>   {this.state.myloc}</h3>
-                        : <h3></h3>
+                            <h3 className= "text-light"><img alt="loc" src = "https://i.pinimg.com/originals/29/93/fd/2993fd151e2e1cab871aec155e22cbcc.png" height="40px" width="40px"></img>   {this.state.myloc}</h3>
+                        : <h3>'</h3>
 
                     }
                     </div>
@@ -255,7 +254,7 @@ export default class DriverPage extends Component {
                     <h3>My Taxi</h3><br></br>
                     <div className="mt-0 pt-0 bg-dark text-light" style = {{display : 'flex', flexDirection : 'row', justifyContent : 'center', alignItems : 'center'}}>
 
-                        <img className="mr-5" src="https://img2.pngio.com/white-sedan-illustration-transparent-png-svg-vector-file-white-sedan-car-png-512_512.png" height="400px" width = "400px"></img>
+                        <img alt="car" className="mr-5" src="https://img2.pngio.com/white-sedan-illustration-transparent-png-svg-vector-file-white-sedan-car-png-512_512.png" height="400px" width = "400px"></img>
                         <div className = "ml-5">
 
                         {
@@ -297,7 +296,7 @@ export default class DriverPage extends Component {
                                         <Button kind="primary" className="text-dark" onClick = {() => this.decline(val.r[0].trip_id, val.r[0].user_id)}>Reject</Button>
                                     </div>
                                 )
-                            }) : <h1></h1>
+                            }) : <h1>'</h1>
                         }
                             </ModalBody>
                             <ModalFooter>
