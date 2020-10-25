@@ -93,7 +93,7 @@ export default class Customer extends Component {
             this.toggle()
             store.addNotification({
                 title: 'Error',
-                message: 'Try Again',
+                message: 'Try another password',
                 type: 'danger',
                 // insert: "top",
                 container: 'top-right',

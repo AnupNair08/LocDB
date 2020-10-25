@@ -120,7 +120,7 @@ router.post('/booktrip', async(req,res) => {
 
 router.post('/getrequests', async(req,res) => {
     const {taxi_id} = req.body
-    connection.query(`SELECT * FROM trip4 WHERE taxi_id="${taxi_id}"`, async (e,op) => {
+    connection.query(`SELECT * FROM trip4 WHERE taxi_id="${taxi_id}" and status=0`, async (e,op) => {
         if(e){
             console.log(e)
             return res.status(404).json({'msg' : 'Error'})

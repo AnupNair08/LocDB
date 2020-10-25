@@ -23,7 +23,7 @@ export default class UserLocation extends Component {
             endN : '',
             startN : '',
             isOpen : false,
-            user_id : "123",
+            user_id : this.props.data.user_id,
             approved : false,
             txmodal : false,
             endModal : false,
@@ -218,7 +218,7 @@ export default class UserLocation extends Component {
             method:'post',
             url : 'http://localhost:5000/api/booktrip',
             data : {
-                user_id : "123",
+                user_id : this.props.data.user_id,
                 taxi_id : taxi,
                 from_s : this.state.start,
                 to_d : this.state.end,

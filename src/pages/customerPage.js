@@ -8,6 +8,7 @@ import {ListItem, ListItemLabel} from 'baseui/list'
 export default class User extends Component {
     constructor(props){
         super(props)
+        console.log(props)
         this.state = {
             user_id : this.props.data.user_id
         }
@@ -59,7 +60,7 @@ export default class User extends Component {
                     <p className="lead">
                     </p>
                 <div>
-                    <UserLocation></UserLocation>
+                    <UserLocation data = {this.props.data.user_id}></UserLocation>
                 </div>
                 <div>
                     <hr className="my-2" />

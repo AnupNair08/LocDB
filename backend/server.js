@@ -72,7 +72,7 @@ app.post('/register', async (req,res) => {
 
 app.post('/gettrips', async(req,res) => {
     const {user_id} = req.body
-    connection.query(`select t.from_s, t.to_d, fare from trip2 t inner join trip3 k on t.from_s=k.from_s and t.to_d = k.to_d where k.user_id ="${user_id}";`, (e,op) => {
+    connection.query(`select t.from_s, t.to_d, fare from trip2 t inner join trip3 k on t.trip_id = k.trip_id where k.user_id ="${user_id}";`, (e,op) => {
         if(e){
             console.log(e)
             return res.status(404).json({'msg': 'Some error occured' })

@@ -229,7 +229,7 @@ export default class DriverPage extends Component {
                     {
                         this.state && this.state.myloc ? 
                             <h3 className= "text-light"><img alt="loc" src = "https://i.pinimg.com/originals/29/93/fd/2993fd151e2e1cab871aec155e22cbcc.png" height="40px" width="40px"></img>   {this.state.myloc}</h3>
-                        : <h3>'</h3>
+                        : <h3>Set Location Please</h3>
 
                     }
                     </div>
@@ -296,7 +296,7 @@ export default class DriverPage extends Component {
                                         <Button kind="primary" className="text-dark" onClick = {() => this.decline(val.r[0].trip_id, val.r[0].user_id)}>Reject</Button>
                                     </div>
                                 )
-                            }) : <h1>'</h1>
+                            }) : <h1>No Active Requests</h1>
                         }
                             </ModalBody>
                             <ModalFooter>
