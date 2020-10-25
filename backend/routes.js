@@ -250,14 +250,27 @@ router.post('/addnew', async(req,res) => {
             UPDATE taxi1 SET driver_id="${driver_id}" where taxi_id="${taxi_id}";
             insert into works values("${driver_id}","2");
             insert into drives values("${driver_id}","${taxi_id}");
-            insert into present_at values("${driver_id}","410078");`
-    connection.query(sql,[1,2,3,4,5,6,7,8,9,10], (e,op) => {
+            insert into present_at values("${driver_id}","410078");
+            insert into availability values("${taxi_id}","410078");`
+    connection.query(sql,[1,2,3,4,5,6,7,8,9,10,11], (e,op) => {
         if(e){
             console.log(e)
             res.status(404).json({'msg' : 'Error'})
         }
         else{
             return res.status(200).json({'msg' : 'Inserted'})
+        }
+    })
+})
+
+router.get('/getgarage', async(req,res) => {
+    connection.query('select * from taxi1 t inner join garage g on t.taxi_id = g.taxi_id;', (e,op) =>{
+        if(e){
+            console.log(e)
+            return res.status(404).json({'msg' : 'Error'})
+        }
+        else{
+            return res.status(200).json({garage : op})
         }
     })
 })
@@ -277,7 +290,18 @@ router.post('/curtrip', async(req,res) => {
 
 router.post('/setrating', async(req,res) => {
     const {rating , trip_id} = req.body
-    connection.query(`UPDATE trip4 set rating="${rating}" where trip_id="${trip_id}";DELETE from ongoing where trip_id="${trip_id}"`,[1,2], (e,op) => {
+    let prevrating = 0
+    connection.query(`SELECT rating from trip4 where trip_id="${trip_id}"`,(err,op) => {
+        if(err){
+            return res.status(404)
+        }
+        else{
+            prevrating = op[0].rating
+        }
+    })
+    console.log(prevrating)
+    const r = Math.ceil((rating + prevrating) / 2)
+    connection.query(`UPDATE trip4 set rating="${r}" where trip_id="${trip_id}";DELETE from ongoing where trip_id="${trip_id}"`,[1,2], (e,op) => {
         if(e){
             console.log(e)
             return res.status(400).json({'msg' : 'Error'})
