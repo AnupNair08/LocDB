@@ -58,7 +58,7 @@ app.post('/logindriver', async (req,res) => {
 app.post('/register', async (req,res) => {
     console.log(req.body)
     const {name, pass ,add, ph}= req.body
-    q = `INSERT INTO user1 values("${pass}","${name}");INSERT INTO user2 values("${pass}","${ph}");INSERT INTO user3 values("${pass}","${add}");INSERT INTO user4 values("${ph}","${name}");`
+    const q = `INSERT INTO user1 values("${pass}","${name}");INSERT INTO user2 values("${pass}","${ph}");INSERT INTO user3 values("${pass}","${add}");INSERT INTO user4 values("${ph}","${name}");`
     connection.query(`${q}`,[1,2,3,4] ,(e,op) => {
         if(e){
             console.log(e)
@@ -72,7 +72,7 @@ app.post('/register', async (req,res) => {
 
 app.post('/gettrips', async(req,res) => {
     const {user_id} = req.body
-    connection.query(`SELECT * FROM trip3 WHERE user_id="${user_id}"`, (e,op) => {
+    connection.query(`select t.from_s, t.to_d, fare from trip2 t inner join trip3 k on t.from_s=k.from_s and t.to_d = k.to_d where k.user_id ="${user_id}";`, (e,op) => {
         if(e){
             console.log(e)
             return res.status(404).json({'msg': 'Some error occured' })
@@ -80,8 +80,8 @@ app.post('/gettrips', async(req,res) => {
         else{
             if(op.length === 0) 
                 return res.status(200).json({data: op})
-            from = op[0].from_s 
-            to = op[0],to_d
+            const from = op[0].from_s 
+            const to = op[0].to_d
             connection.query(`SELECT * FROM trip2 WHERE from_s="${from}" and to_d="${to}"`, (e,opt) =>{
                 console.log(opt)
             })

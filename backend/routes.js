@@ -41,6 +41,18 @@ router.post('/getshift', async(req,res) => {
     })
 })
 
+router.get('/getnames', async (req,res) => {
+    connection.query(`SELECT * FROM location`,(e,op) => {
+        if(e){
+            console.log(e)
+            return res.status(404).json({'msg' : 'Not found'})
+        }
+        else{
+            return res.status(200).json({location : op})
+        }
+    })
+})
+
 router.post('/getnearby', async(req,res) => {
     const {start} = req.body
     connection.query(`select * from driver1 d inner join taxi1 t on d.taxi_id = t.taxi_id where t.taxi_id in (SELECT taxi_id from availability where zipcode="${start}");`, (e,op) => {

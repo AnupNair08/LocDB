@@ -279,7 +279,7 @@ export default class DriverPage extends Component {
                             </ModalBody>    
                             <ModalFooter>
                             <Button color="secondary" onClick={this.detailtoggle}>Cancel</Button>
-                            <Button color="secondary" onClick={()=> this.approve(this.state.c, this.state.user)}>Aprove</Button>
+                            <Button color="secondary" onClick={()=> this.approve(this.state.c, this.state.user)}>Approve</Button>
                             </ModalFooter>
                         </Modal>
                         <Modal isOpen={this.state && this.state.modal} onClose={this.modalOpen} >
