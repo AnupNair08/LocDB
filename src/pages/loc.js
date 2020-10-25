@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Dropdown, DropdownToggle, DropdownMenu,Button } from 'reactstrap';
+import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
+import {Button} from 'baseui/button'
 import ReactNotification, { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css'
 
@@ -82,14 +83,14 @@ export default class Location extends Component {
         return (
             <div>
                  <Dropdown isOpen={this.state.open} toggle={this.toggle}>
-                   <DropdownToggle color="primary" caret>
+                   <DropdownToggle color="black" caret>
                     Update Location
                     </DropdownToggle>
                 <DropdownMenu>
                     {this.state.location && this.state.location.map((k,val) => {
                         return (
                             <div style = {{display : 'flex', flexDirection : 'row', justifyContent : 'center' , alignItems : 'center'}} className = "w-100">
-                                <Button color="white" onClick={() => this.getinput(k.zipcode)} header>{k.loc_name}</Button>
+                                <Button  onClick={() => this.getinput(k.zipcode)} header>{k.loc_name}</Button>
                                 <br></br>
                             </div>
                         ) 

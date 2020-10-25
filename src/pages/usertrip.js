@@ -323,9 +323,9 @@ export default class UserLocation extends Component {
                 >
                 <div style={{display : 'flex' , flexDirection : 'column', justifyContent : 'center', alignItems : 'center'}}>
                         <div>
-                            <h3 className="lead">Source</h3>
                             <Dropdown id="start" isOpen={this.state.open} toggle={this.toggle}>
                                 <DropdownToggle caret>
+                                <h3 className="lead text-align-left">Source</h3>
                                 {this.state.startN !== '' ? <h6>{this.state.startN}</h6> : <h6>Select Source</h6>}
                                 {/* Select Start */}
                                 </DropdownToggle>
@@ -342,9 +342,9 @@ export default class UserLocation extends Component {
                             </Dropdown>
                         </div>
                     <div>
-                        <h3 className="lead">Destination</h3>
-                        <Dropdown id = "end" isOpen={this.state.endopen} toggle={this.endtoggle}>
+                        <Dropdown className="mt-3" id = "end" isOpen={this.state.endopen} toggle={this.endtoggle}>
                         <DropdownToggle caret>
+                        <h3 className="lead">Destination</h3>
                         {this.state.endN !== '' ? <h6>{this.state.endN}</h6> : <h6>Select Destination</h6>}
                         {/* Select End */}
 
