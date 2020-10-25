@@ -29,7 +29,7 @@ export default class Landing extends Component {
             <div style = {{display : 'flex', flexDirection:'row', justifyContent : 'center', alignItems:'center', height : '100vh'}} className="bg-dark">
                 <div style = {{display : 'flex', flexDirection : "column", justifyContent : "center", alignItems : 'center'}} className = "mt-5">
                 <h1 className="display-3 text-light">LocDB: A Taxi Management Service</h1>
-                <img src="https://cdn2.iconfinder.com/data/icons/mobil-conveniences/100/tnv-512.png" height="200px" ></img>
+                <img alt="landing" src="https://cdn2.iconfinder.com/data/icons/mobil-conveniences/100/tnv-512.png" height="200px" ></img>
                 <h1 className="lead text-light">Choose user type</h1>
                 <div style = {{display : 'flex' , flexDirection : 'column'}} >
                 <Button kind="primary" onClick = {this.handlecust} className="lead">Customer</Button>

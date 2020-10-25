@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import DriverPage from './driverPage'
-import {  CardHeader, CardFooter, CardBody,
-    CardTitle, CardText } from 'reactstrap';
+import {  CardHeader, CardFooter, CardBody, } from 'reactstrap';
 import {Input} from 'baseui/input'
 import { Card} from 'baseui/card'
 import { Button} from 'baseui/button'
+import 'react-notifications-component/dist/theme.css'
+import ReactNotification, { store } from 'react-notifications-component';
 
 import axios from 'axios'
 export default class Driver extends Component {
@@ -41,6 +42,19 @@ export default class Driver extends Component {
                 }
                 console.log(res)
         }).catch(e => {
+            store.addNotification({
+                title: 'Error',
+                message: 'Incorrect credentials',
+                type: 'danger',
+                // insert: "top",
+                container: 'top-center',
+                animationIn: ['animated', 'fadeIn'],
+                animationOut: ['animated', 'fadeOut'],
+                dismiss: {
+                  duration: 3000,
+                  pauseOnHover: true
+                }
+              });
             console.log(e)
         })
     }
@@ -50,7 +64,7 @@ export default class Driver extends Component {
                 {
                     !this.state.login ? 
                 <div className = "mt-3" >
-                    
+                            <ReactNotification></ReactNotification>
                             <h1 className="display-3">
                                 Welcome to LocDB!
                             </h1>

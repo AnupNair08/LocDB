@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 import {Button} from 'baseui/button'
-import ReactNotification, { store } from 'react-notifications-component';
+import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css'
 
 export default class Location extends Component {

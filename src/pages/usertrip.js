@@ -367,10 +367,10 @@ export default class UserLocation extends Component {
                 <Button color="success" className="mt-5" onClick = {() => {this.gettaxi(); this.txmodal()}}>
                     Check for taxis
                 </Button>
-                <img className="mt-5" src="https://icon-library.com/images/location-icon-white-png/location-icon-white-png-12.jpg" height="200px" width="200px"></img>
+                <img alt="lib" className="mt-5" src="https://icon-library.com/images/location-icon-white-png/location-icon-white-png-12.jpg" height="200px" width="200px"></img>
                 <Modal isOpen = {this.state.txmodal} toggle = {this.txmodal}>
                     <ModalHeader>
-                        <img src="https://cdn4.iconfinder.com/data/icons/mobile-shopping-pack/512/gps-512.png" height="40px" width="40px"></img>    
+                        <img  alt="icon" src="https://cdn4.iconfinder.com/data/icons/mobile-shopping-pack/512/gps-512.png" height="40px" width="40px"></img>    
                         Nearby Taxis
                     </ModalHeader>
                     
@@ -414,13 +414,13 @@ export default class UserLocation extends Component {
 
                             <div style={{textAlign : 'left',  marginRight : "40px"}}>
                             
-                            <h3><img src="https://www.pngkit.com/png/full/14-146161_white-location-icon-png-location-logo-png-white.png" height="40px" width="40px"></img> To: {this.parseZip(this.state.ogtrip.to_d)}</h3>
-                            <h3><img src="https://www.pngkit.com/png/full/14-146161_white-location-icon-png-location-logo-png-white.png" height="40px" width="40px"></img> From: {this.parseZip(this.state.ogtrip.from_s)}</h3>
-                            <h3><img src="https://icon-library.com/images/white-clock-icon-png/white-clock-icon-png-24.jpg" height="40px" width="40px"></img> Duration: {this.parseDuration(this.state.ogtrip.duration)}</h3>
-                            <h3><img src="https://www.iconsdb.com/icons/preview/white/indian-rupee-xxl.png" height="40px" width="40px"></img> Fare: ₹{this.state.ogtrip.fare}</h3>
+                            <h3><img alt="icon" src="https://www.pngkit.com/png/full/14-146161_white-location-icon-png-location-logo-png-white.png" height="40px" width="40px"></img> To: {this.parseZip(this.state.ogtrip.to_d)}</h3>
+                            <h3><img alt="icon" src="https://www.pngkit.com/png/full/14-146161_white-location-icon-png-location-logo-png-white.png" height="40px" width="40px"></img> From: {this.parseZip(this.state.ogtrip.from_s)}</h3>
+                            <h3><img alt="icon" src="https://icon-library.com/images/white-clock-icon-png/white-clock-icon-png-24.jpg" height="40px" width="40px"></img> Duration: {this.parseDuration(this.state.ogtrip.duration)}</h3>
+                            <h3><img alt="icon" src="https://www.iconsdb.com/icons/preview/white/indian-rupee-xxl.png" height="40px" width="40px"></img> Fare: ₹{this.state.ogtrip.fare}</h3>
                             </div>
                             <div>
-                                <img src="https://lh3.googleusercontent.com/proxy/QVUAYjrr_QYPjhA5SR2xzKzHNm2U-4adeBf4UstTHy7fEZheBzG21SQE1U5J2CpIfNwFSAZZiLmkYX3qr7P_OcFHyvQbRtIifSe36xewNeeP4_JV0bTv2_8H-GrDe65ouPewt1TfNgBWWisGtWKkQiLN" width="240px" height="100px"></img>
+                                <img alt="icon" src="https://lh3.googleusercontent.com/proxy/QVUAYjrr_QYPjhA5SR2xzKzHNm2U-4adeBf4UstTHy7fEZheBzG21SQE1U5J2CpIfNwFSAZZiLmkYX3qr7P_OcFHyvQbRtIifSe36xewNeeP4_JV0bTv2_8H-GrDe65ouPewt1TfNgBWWisGtWKkQiLN" width="240px" height="100px"></img>
                             </div>
                             </div>
                         <Button onClick={this.toggleEnd}>End Trip</Button>

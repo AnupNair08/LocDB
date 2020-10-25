@@ -66,7 +66,6 @@ router.post('/getnearby', async(req,res) => {
     })
 })
 
-
 router.post('/getuser', async(req,res) => {
     const {user_id } = req.body
     connection.query(`select phone,name from user1 inner join user2 on user1.user_id=user2.user_id and user1.user_id="${user_id}";`, (e,op) => {
@@ -79,7 +78,6 @@ router.post('/getuser', async(req,res) => {
         }
     })  
 })
-
 
 router.post('/booktrip', async(req,res) => {
     const {user_id, taxi_id, from_s, to_d, trip_id} = req.body
@@ -157,7 +155,6 @@ router.post('/getrequests', async(req,res) => {
         }
     })
 })
-
 
 router.post('/approve', async(req,res) => {
     const {trip_id, start, end,  duration, fare, user_id} = req.body
@@ -323,4 +320,5 @@ router.post('/getongoing', async(req,res) => {
         }
     })
 })
+
 module.exports = router

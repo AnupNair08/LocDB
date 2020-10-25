@@ -57,6 +57,18 @@ export default class Customer extends Component {
                 }
                 console.log(res)
         }).catch(e => {
+            store.addNotification({
+                title: 'Error',
+                message: 'Incorrect credentials',
+                type: 'danger',
+                container: 'top-center',
+                animationIn: ['animated', 'fadeIn'],
+                animationOut: ['animated', 'fadeOut'],
+                dismiss: {
+                  duration: 3000,
+                  pauseOnHover: true
+                }
+              });
             console.log(e)
         })
     }
@@ -80,7 +92,7 @@ export default class Customer extends Component {
                 title: 'Successfully Registered',
                 message: 'Login to your Account',
                 type: 'success',
-                container: 'top-right',
+                container: 'top-center',
                 animationIn: ['animated', 'fadeIn'],
                 animationOut: ['animated', 'fadeOut'],
                 dismiss: {

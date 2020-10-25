@@ -54,7 +54,6 @@ app.post('/logindriver', async (req,res) => {
     })
 })
 
-
 app.post('/register', async (req,res) => {
     console.log(req.body)
     const {name, pass ,add, ph}= req.body
