@@ -103,7 +103,7 @@ app.post('/gettaxi',async (req,res) => {
     })
 })
 
-app.post('/getlocation',async (req,res) => {
+app.get('/getlocation',async (req,res) => {
     connection.query(`SELECT * FROM location`, (e,op) => {
         if(e){
             return res.status(400).json({'msg' : 'Error occured'})

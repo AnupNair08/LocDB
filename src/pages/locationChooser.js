@@ -17,7 +17,7 @@ export default class Location extends Component {
     }
     componentDidMount = async () => {
         await axios({
-            method : 'post',
+            method : 'get',
             url : 'http://localhost:5000/getlocation',
         }).then((res) => {
             console.log(res)
