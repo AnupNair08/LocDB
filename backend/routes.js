@@ -240,19 +240,26 @@ router.post('/checkstatus', async(req,res) => {
 
 router.post('/addnew', async(req,res) => {
     const {driver_id, taxi_id, d_name, d_phone_no, rating, number, color, model, cclass, capacity} = req.body
-    
-    const sql = `insert into taxi1 values("${taxi_id}","${color}","${number}", "${driver_id}","${model}");
-insert into taxi2 values("${taxi_id}","${model}");
-insert into taxi3 values("${model}", ${capacity}, "${cclass}");
-insert into driver1 values("${driver_id}","${d_name}","${d_phone_no}","${taxi_id}",${rating});
-insert into driver2 values("${taxi_id}","${d_phone_no}");
-insert into driver3 values("${d_phone_no}","${d_name}");
-insert into works values("${driver_id}","2");
-insert into drives values("${driver_id}","${taxi_id}");
-insert into present_at values("${driver_id}","410078");
-
-`
-    connection.query()
+    console.log(number)
+    const sql = `insert into taxi1 values("${taxi_id}","${color}","${number}", NULL,"${model}");
+            insert into taxi2 values("${taxi_id}","${model}");
+            insert into taxi3 values("${model}", ${capacity}, "${cclass}");
+            insert into driver1 values("${driver_id}","${d_name}","${d_phone_no}","${taxi_id}",${rating});
+            insert into driver2 values("${driver_id}","${d_phone_no}");
+            insert into driver3 values("${d_phone_no}","${d_name}");
+            UPDATE taxi1 SET driver_id="${driver_id}" where taxi_id="${taxi_id}";
+            insert into works values("${driver_id}","2");
+            insert into drives values("${driver_id}","${taxi_id}");
+            insert into present_at values("${driver_id}","410078");`
+    connection.query(sql,[1,2,3,4,5,6,7,8,9,10], (e,op) => {
+        if(e){
+            console.log(e)
+            res.status(404).json({'msg' : 'Error'})
+        }
+        else{
+            return res.status(200).json({'msg' : 'Inserted'})
+        }
+    })
 })
 
 router.post('/curtrip', async(req,res) => {
