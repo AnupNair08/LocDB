@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import Header from './header'
+import Header from './headerFile'
 import axios from 'axios'
 import {Jumbotron, Button} from 'reactstrap'
-import UserLocation from './usertrip'
+import UserLocation from './userTrip'
 export default class User extends Component {
     constructor(props){
         super(props)

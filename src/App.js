@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import Landing from './pages/landing';
-import Customer from './pages/cust';
-import Driver from './pages/driver';
-import Admin from './pages/admin';
+import Landing from './pages/landingPage';
+import Customer from './pages/customerLogin';
+import Driver from './pages/driverLogin';
+import Admin from './pages/adminPage';
 
 import {Client as Styletron} from 'styletron-engine-atomic';
 import {Provider as StyletronProvider} from 'styletron-react';

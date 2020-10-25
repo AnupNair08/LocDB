@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import User from './userpage'
+import User from './customerPage'
 import { Modal , ModalBody, ModalFooter,ModalHeader} from 'reactstrap'
 import ReactNotification, { store } from 'react-notifications-component';
 import { Input} from 'baseui/input'

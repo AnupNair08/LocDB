@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Input, Jumbotron, Modal, ModalBody, ModalFooter } from 'reactstrap'
-import Header from './header'
+import Header from './headerFile'
 
 export default class Admin extends Component {
     constructor(props){

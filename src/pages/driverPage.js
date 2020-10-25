@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import Header from './header'
+import Header from './headerFile'
 import {ListGroup, ListGroupItem, CardTitle, Jumbotron, Input} from 'reactstrap'
 import axios from 'axios'
 import {Button} from 'baseui/button'
 import {StarRating} from 'baseui/rating'
 import {Card} from 'baseui/card'
 import {Modal, ModalHeader, ModalFooter, ModalBody} from 'baseui/modal'
-import Location from './loc'
+import Location from './locationChooser'
 import ReactNotification, { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css'
 
