@@ -23,7 +23,7 @@ export default class UserLocation extends Component {
             endN : '',
             startN : '',
             isOpen : false,
-            user_id : this.props.data.user_id,
+            user_id : this.props.data,
             approved : false,
             txmodal : false,
             endModal : false,
@@ -213,12 +213,13 @@ export default class UserLocation extends Component {
 
     book = (taxi) => {
         const trip_id = Math.floor(Math.random() * 1000000).toString()
+        console.log(this.props.data)
         localStorage.setItem("last",trip_id)
         axios({
             method:'post',
             url : 'http://localhost:5000/api/booktrip',
             data : {
-                user_id : this.props.data.user_id,
+                user_id : this.props.data,
                 taxi_id : taxi,
                 from_s : this.state.start,
                 to_d : this.state.end,
