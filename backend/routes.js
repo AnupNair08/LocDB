@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const connection = require('./conn')
 
+// Fetches current location details of the driver
 router.post('/mylocation', async (req,res) => {
     const {driver_id} = req.body
     console.log(driver_id)
@@ -15,6 +16,7 @@ router.post('/mylocation', async (req,res) => {
     })
 })
 
+// Updates the drivers location
 router.post('/update', async(req,res) => {
     const {driver_id, zipcode} = req.body
     
@@ -28,6 +30,7 @@ router.post('/update', async(req,res) => {
     })
 })
 
+//  Fetches the drivers shift details
 router.post('/getshift', async(req,res) => {
     const {driver_id} = req.body
     connection.query(`SELECT * FROM shifts where shift_id in (SELECT shift_id from works where driver_id="${driver_id}")`, (e,op) => {
@@ -41,6 +44,7 @@ router.post('/getshift', async(req,res) => {
     })
 })
 
+// Get the names of all the locations
 router.get('/getnames', async (req,res) => {
     connection.query(`SELECT * FROM location`,(e,op) => {
         if(e){
@@ -53,6 +57,7 @@ router.get('/getnames', async (req,res) => {
     })
 })
 
+// Get all nearby taxis from the current location
 router.post('/getnearby', async(req,res) => {
     const {start} = req.body
     connection.query(`select * from driver1 d inner join taxi1 t on d.taxi_id = t.taxi_id where t.taxi_id in (SELECT taxi_id from availability where zipcode="${start}");`, (e,op) => {
@@ -66,6 +71,7 @@ router.post('/getnearby', async(req,res) => {
     })
 })
 
+// Get the user details from the user id
 router.post('/getuser', async(req,res) => {
     const {user_id } = req.body
     connection.query(`select phone,name from user1 inner join user2 on user1.user_id=user2.user_id and user1.user_id="${user_id}";`, (e,op) => {
@@ -79,6 +85,7 @@ router.post('/getuser', async(req,res) => {
     })  
 })
 
+// Book a trip from source to destination
 router.post('/booktrip', async(req,res) => {
     const {user_id, taxi_id, from_s, to_d, trip_id} = req.body
     let driver_id = ""
@@ -116,6 +123,8 @@ router.post('/booktrip', async(req,res) => {
     })    
 })
 
+
+//  Retrieve all the trip requests for the driver
 router.post('/getrequests', async(req,res) => {
     const {taxi_id} = req.body
     connection.query(`SELECT * FROM trip4 WHERE taxi_id="${taxi_id}" and status=0`, async (e,op) => {
@@ -156,6 +165,8 @@ router.post('/getrequests', async(req,res) => {
     })
 })
 
+
+// Approves the current trip request
 router.post('/approve', async(req,res) => {
     const {trip_id, start, end,  duration, fare, user_id} = req.body
     let from_s = ''
@@ -195,6 +206,7 @@ router.post('/approve', async(req,res) => {
     
 })
 
+// Declines the current trip request
 router.post('/decline', async(req,res) => {
     const {trip_id} = req.body
     connection.query(`DELETE FROM trip3 where trip_id="${trip_id}"; DELETE FROM books where trip_id="${trip_id}"`,[1,2],(e,op) => {
@@ -205,6 +217,7 @@ router.post('/decline', async(req,res) => {
     })
 })
 
+// Checks the details of the last trip that was booked by the user
 router.post('/checkstatus', async(req,res) => {
     const {user_id, trip_id} = req.body
     console.log(user_id, trip_id)
@@ -235,6 +248,8 @@ router.post('/checkstatus', async(req,res) => {
     })
 })
 
+
+//  Adding a new driver
 router.post('/addnew', async(req,res) => {
     const {driver_id, taxi_id, d_name, d_phone_no, rating, number, color, model, cclass, capacity} = req.body
     console.log(number)
@@ -260,6 +275,8 @@ router.post('/addnew', async(req,res) => {
     })
 })
 
+// Retrieve information about the garage
+
 router.get('/getgarage', async(req,res) => {
     connection.query('select * from taxi1 t inner join garage g on t.taxi_id = g.taxi_id;', (e,op) =>{
         if(e){
@@ -272,6 +289,7 @@ router.get('/getgarage', async(req,res) => {
     })
 })
 
+// Get details about a trip
 router.post('/curtrip', async(req,res) => {
     const {trip_id } = req.body
     connection.query(`SELECT * FROM trip2 where trip_id="${trip_id}"`, (e,op) => {
@@ -285,6 +303,7 @@ router.post('/curtrip', async(req,res) => {
     })
 })
 
+// Give rating to the driver
 router.post('/setrating', async(req,res) => {
     const {rating , trip_id} = req.body
     let prevrating = 0
@@ -308,6 +327,7 @@ router.post('/setrating', async(req,res) => {
 
 })
 
+// Get details about the ongoing trip
 router.post('/getongoing', async(req,res) => {
     const {user_id} = req.body
 

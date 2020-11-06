@@ -13,7 +13,11 @@ Batch: T4
 #### Project Description:
 
 <b>LocDB - A Taxi management service</b>
-With the increasing demand of online services, the taxi booking services have emerged to be one of the primary sectors where databases are employed heavily. Although there is a lot of optimizations and tools being deployed for the major real-life use cases, a simple and basic version of the same design pattern is aimed at by this project. The major focus of LocDB is to simulate a smaller case scenario of a location based reactive system. The basic requirement of the entire project will rely heavily on the database design and the way the data is represented for the needed services. LocDB will provide a similar interface wherein a customer can book taxis that are in a proximity to their current location and create trips to new locations. The underlying gist of the project is to handle updates and provide services by efficient retrieval of data from the database. The other enhancements can include seeing the trip history and nearby places that have been visited and so on
+With the increasing demand of online services, the taxi booking services have emerged to be one of the primary sectors where databases are employed heavily. Although there is a lot of optimizations and tools being deployed for the major real-life use cases, a simple and basic version of the same design pattern is aimed at by this project. The major focus of LocDB is to simulate a smaller case scenario of a location based reactive system. The basic requirement of the entire project will rely heavily on the database design and the way the data is represented for the needed services. LocDB will provide a similar interface wherein a customer can book taxis that are in a proximity to their current location and create trips to new locations.
+
+#### ER Diagram
+
+<img src="SRS/er.jpg">
 
 #### Tech Stack Used:
 
@@ -31,27 +35,68 @@ Frameworks:
 4. NodeJS
 ```
 
-#### Project Screenshots:
+##### Installation guide:
 
-This section contains the screenshots for various stages during the use of the application.
+```
+git clone [repo link]
 
-<img src="screenshots/1.png">
-<img src="screenshots/2.png">
-<img src="screenshots/3.png">
-<img src="screenshots/4.png">
-<img src="screenshots/5.png">
-<img src="screenshots/6.png">
-<img src="screenshots/7.png">
-<img src="screenshots/8.png">
-<img src="screenshots/9.png">
-<img src="screenshots/10.png">
-<img src="screenshots/11.png">
-<img src="screenshots/12.png">
-<img src="screenshots/13.png">
-<img src="screenshots/14.png">
-<img src="screenshots/15.png">
-<img src="screenshots/16.png">
-<img src="screenshots/17.png">
-<img src="screenshots/18.png">
-<img src="screenshots/19.png">
-<img src="screenshots/20.png">
+Install the dependencies
+cd locdb & npm i
+cd locdb/backend & npm i
+
+Run the frontend
+npm start
+
+Run the backend
+cd backend
+nodemon server.js
+```
+
+#### Project Features:
+
+The project consists of three interfaces:
+
+1. <b>Admin</b>
+2. <b>Customer</b>
+3. <b>Driver</b>
+
+<hr></hr>
+<h3>Admin</h3>
+  <p><b>The admin can create and add new drivers to the database and can also monitor the garage and the status of the vehicles.</b></p>
+
+  <img src="screenshots/1.png" height="300px" width="500px" >
+  <img src="screenshots/2.png" height="300px" width="500px">
+  <img src="screenshots/3.png" height="300px" width="500px">
+
+ <hr></hr>
+ <h3>Customer</h3>
+
+  <img src="screenshots/4.png" height="300px" width="500px">
+    <p><b>The customer can either choose to login or register from the home screen. Once logged in they will go the home page </b></p>
+  <img src="screenshots/5.png" height="300px" width="500px">
+  <img src="screenshots/6.png" height="300px" width="500px">
+
+  <p><b>From here the customer can book a ride by choosing source and destination.</b></p>
+  <img src="screenshots/7.png" height="300px" width="500px">
+  <img src="screenshots/8.png" height="300px" width="500px">
+  <p><b>Nearby Taxis will be listed and the ride can be booked by choosing any one of the taxis.</b></p>
+  <img src="screenshots/9.png" height="300px" width="500px">
+  <img src="screenshots/10.png" height="300px" width="500px">
+  <img src="screenshots/11.png" height="300px" width="500px">
+
+  <p><b>From here we can go the driver page and check for the active requests that have been received. The requests can be either accepted or rejected. After accepting the request the fare and duration of the ride are to be listed.</b></p><br>
+  <img src="screenshots/12.png" height="300px" width="500px">
+  <img src="screenshots/13.png" height="300px" width="500px">
+  <img src="screenshots/14.png" height="300px" width="500px">
+  <p><b>After completing the trip the customer can end the trip and can give ratings and choose payment methods. The trip will get recorded in the trip history.</b></p>
+  <img src="screenshots/15.png" height="300px" width="500px">
+  <img src="screenshots/16.png" height="300px" width="500px"> 
+  <hr></hr>
+<h3>Driver Interface</h3>
+  <p><b>The login screen for the driver. Will be redirected to the home screen from here. From the home screen the location of the driver can be updated.</b></p>
+  <img src="screenshots/17.png" height="300px" width="500px">
+  <img src="screenshots/18.png" height="300px" width="500px">
+  <p><b>Trip requests can be viewed and accepted or rejected from this screen.</b></p>
+  <img src="screenshots/19.png" height="300px" width="500px">
+  <p><b>The driver's taxi details also appear on the home screen.</b></p>
+  <img src="screenshots/20.png" height="300px" width="500px">
