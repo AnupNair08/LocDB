@@ -67,8 +67,35 @@ nodemon server.js
 The project consists of three interfaces:
 
 1. <b>Admin</b>
+
+```
+1. Add Drivers
+2. View the Garage Status
+```
+
 2. <b>Customer</b>
+
+```
+1. Can login/register into the system
+2. The customer can request for new trips from the home screen
+3. The source and destination of the trips can be selected and the nearby taxis will be listed.
+4. From the list one taxi can be selected and the driver will be notified about the request.
+5. The status of booking can be viewed.
+6. Once the driver approves the request then then trip will be started.
+7. The trip can be ended by the customer by providing rating and payment details
+8. All the trip history of the user can be seen on the home screen.
+```
+
 3. <b>Driver</b>
+
+```
+1. Can login to the system and view details about location, rating etc.
+2. Can update current location from the home screen.
+3. The driver can check their shift times and taxi details.
+4. All the trip requests to the driver can be seen in requests list.
+5. The driver can approve the trip and select fare and duration of the ride.
+6. The driver will get rating after completing the trip.
+```
 
 <hr></hr>
 <h3>Admin</h3>
