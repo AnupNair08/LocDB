@@ -1,6 +1,7 @@
 # LocDB
 
-<b>A database schema for Taxi Management services.</b>
+<b>A database schema for Taxi Management services.</b><br>
+<b>Link to the repository: <a href="https://github.com/AnupNair08/LocDB">https://github.com/AnupNair08/LocDB</a></b>
 
 ```
 MIS: 111811052
